@@ -71,8 +71,15 @@ public class Main {
                     int amount = sc.nextInt();
                     sc.nextLine();
     
-                    System.out.println("Enter slip ID:");
-                    String slipId = sc.nextLine();
+                    String slipId;
+                    while (true) {
+                        System.out.println("Enter slip ID:");
+                        slipId = sc.nextLine();
+                        if (!walletManager.isDuplicateSlipId(slipId)) {
+                            break;
+                        }
+                        System.out.println("Error: Slip ID already exists. Please enter a unique slip ID.");
+                    }
     
                     walletManager.requestRecharge(student.getUsername(), amount, slipId);
                     UI.waitForUser(sc);  // Pause after recharge request to show confirmation
@@ -123,6 +130,7 @@ public class Main {
             }
         }
     }
+    
     
     
     private static void showAdminMenu(Scanner sc, WalletManager walletManager) {
