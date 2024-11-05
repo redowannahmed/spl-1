@@ -9,7 +9,7 @@ public class WalletManager {
         this.auth = auth;
     }
 
-    private boolean isDuplicateSlipId(String slipId) {
+    public boolean isDuplicateSlipId(String slipId) {
         try (BufferedReader reader = new BufferedReader(new FileReader(RECHARGE_REQUESTS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -29,16 +29,14 @@ public class WalletManager {
             System.out.println("Error: Recharge amount cannot be negative.");
             return; 
         }
-
-        Scanner sc = new Scanner(System.in);
-        while (isDuplicateSlipId(slipId))
-        {
-            System.out.println("Slid ID already exists.");
-            slipId = sc.nextLine();
+    
+        if (isDuplicateSlipId(slipId)) {
+            System.out.println("Error: Slip ID already exists. Please enter a unique slip ID.");
+            return;
         }
-
+    
         RechargeRequest request = new RechargeRequest(username, amount, slipId);
-
+    
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(RECHARGE_REQUESTS_FILE, true))) {
             writer.write(request.toString());
             writer.newLine();
@@ -47,6 +45,7 @@ public class WalletManager {
             System.out.println("Error writing to recharge requests file: " + e.getMessage());
         }
     }
+    
 
     private List<RechargeRequest> loadRequests() {
         List<RechargeRequest> requests = new ArrayList<>();
