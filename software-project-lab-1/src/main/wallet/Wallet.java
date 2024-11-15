@@ -1,3 +1,4 @@
+package wallet;
 public class Wallet {
     private int balance;
 

@@ -1,4 +1,15 @@
+package controller;
 import java.util.*;
+
+import UI.UI;
+import auth.Authentication;
+import auth.AuthenticationHelper;
+import auth.UpdateInfo;
+import token.TokenManager;
+import user.Admin;
+import user.Student;
+import user.User;
+import wallet.WalletManager;
 
 public class Main {
     public static void main(String[] args) {
@@ -116,7 +127,7 @@ public class Main {
                     break;
                 case 7:
                     UI.clearScreen();
-                    UpdateInfo.updateInfo(student, auth); // Assuming `auth` is passed in as an additional parameter
+                    UpdateInfo.updateInfo(student, auth, sc); // Assuming `auth` is passed in as an additional parameter
                     UI.waitForUser(sc);
                     UI.clearScreen();
                     break;

@@ -1,4 +1,10 @@
+package auth;
 import java.util.*;
+
+import UI.UI;
+import exceptions.DuplicateIDException;
+import exceptions.DuplicateUsernameException;
+import user.User;
 
 public class AuthenticationHelper {
     private Authentication auth;
