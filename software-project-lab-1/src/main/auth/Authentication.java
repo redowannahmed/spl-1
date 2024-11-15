@@ -1,4 +1,11 @@
+package auth;
 import java.io.*;
+
+import exceptions.DuplicateIDException;
+import exceptions.DuplicateUsernameException;
+import user.Admin;
+import user.Student;
+import user.User;
 
 public class Authentication {
     private static final String STUDENTS_FILE = "students.txt";

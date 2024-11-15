@@ -1,5 +1,9 @@
+package wallet;
 import java.io.*;
 import java.util.*;
+
+import auth.Authentication;
+import user.Student;
 
 public class WalletManager {
     private static final String RECHARGE_REQUESTS_FILE = "rechargeRequests.txt";

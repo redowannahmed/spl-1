@@ -1,3 +1,4 @@
+package auth;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -5,11 +6,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+import user.Student;
+
 public class UpdateInfo
 {
+    Scanner sc = new Scanner(System.in);
 
-    public static void updateInfo(Student student, Authentication auth) {
-        Scanner sc = new Scanner(System.in);
+    public static void updateInfo(Student student, Authentication auth, Scanner sc) {
     
         while (true) {
             System.out.println("\nUpdate Info:");

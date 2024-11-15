@@ -1,3 +1,4 @@
+package token;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -6,6 +7,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import UI.UI;
+import user.Student;
+import wallet.Wallet;
+import wallet.WalletManager;
 
 public class TokenManager {
     private WalletManager walletManager;

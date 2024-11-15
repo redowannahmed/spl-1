@@ -1,3 +1,4 @@
+package token;
 public enum TokenType {
     BREAKFAST(50),
     LUNCH(100),

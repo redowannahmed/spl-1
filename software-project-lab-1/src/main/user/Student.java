@@ -1,4 +1,7 @@
+package user;
 import java.io.*;
+
+import wallet.Wallet;
 
 public class Student extends User {
     private String name;
