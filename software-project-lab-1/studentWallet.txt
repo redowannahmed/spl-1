@@ -1,1 +1,7 @@
-siminchowdhuryy,400
+student1,550
+redowan,7350
+random1,850
+tasifa,950
+farhan,9000
+tasof,1000
+student2,1000

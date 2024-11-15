@@ -29,13 +29,13 @@ public class AuthenticationHelper {
     
         User user = auth.login(username, password);
         if (user != null) {
-            return user;
+            return user; // Return user if login is successful
         } else {
             System.out.println("Login failed. Invalid username or password.");
-            UI.waitForUser(sc);
+            UI.waitForUser(sc); // Wait for user acknowledgment before clearing screen
             UI.clearScreen();
         }
-        return null;
+        return null; // Return null if login fails
     }
     
     
@@ -65,11 +65,11 @@ public class AuthenticationHelper {
         while (true) {
             if (sc.hasNextInt()) {
                 id = sc.nextInt();
-                sc.nextLine();
+                sc.nextLine(); // Clear the newline character
                 break;
             } else {
                 System.out.println("Invalid ID. Please enter a numeric ID:");
-                sc.next();
+                sc.next(); // Consume invalid input
             }
         }
     

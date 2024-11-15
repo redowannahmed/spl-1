@@ -14,4 +14,14 @@ public abstract class User {
     public String getPassword() {
         return password;
     }
+
+    public void setUsername (String NewUsername)
+    {
+        this.username = NewUsername;
+    }   
+
+    public void setPassword (String newPassword)
+    {
+        this.password = newPassword;
+    }
 }
