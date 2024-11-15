@@ -50,11 +50,11 @@ public class Authentication {
         }
     }
 
-    private boolean isStudentUsernameUnique(String username) {
+    public boolean isStudentUsernameUnique(String username) {
         try (BufferedReader reader = new BufferedReader(new FileReader(STUDENTS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) { // Skip empty lines
+                if (line.trim().isEmpty()) { 
                     continue;
                 }
                 try {
@@ -94,7 +94,6 @@ public class Authentication {
         return true;
     }
     
-
     public Student findStudentByUsername(String username) {
         try (BufferedReader reader = new BufferedReader(new FileReader(STUDENTS_FILE))) {
             String line;

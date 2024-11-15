@@ -28,7 +28,7 @@ public class Main {
                         if (loggedInUser instanceof Admin) {
                             showAdminMenu(sc, walletManager);
                         } else if (loggedInUser instanceof Student) {
-                            showStudentMenu(sc, (Student) loggedInUser, walletManager, tokenHelper);
+                            showStudentMenu(sc, (Student) loggedInUser, auth, walletManager, tokenHelper);
                         }
                     }
                     break;
@@ -49,7 +49,7 @@ public class Main {
         }
     }
 
-    private static void showStudentMenu(Scanner sc, Student student, WalletManager walletManager, TokenManager tokenManager) {
+    private static void showStudentMenu(Scanner sc, Student student, Authentication auth, WalletManager walletManager, TokenManager tokenManager) {
         while (true) {
             UI.clearScreen();
             System.out.println("\nStudent Menu:");
@@ -100,11 +100,12 @@ public class Main {
                     UI.clearScreen();
                     System.out.println("Pending Recharge Requests:");
                     walletManager.viewPendingRequests(student.getUsername());
-                    UI.waitForUser(sc);  // Pause to allow user to view pending requests
-                    UI.clearScreen();    // Clear screen after showing pending requests
+                    UI.waitForUser(sc); 
+                    UI.clearScreen();  
                     break;
                 case 5:
-                    System.out.println("feature under development");
+                    UI.clearScreen();
+                    tokenManager.viewPurchaseHistory(student);
                     UI.waitForUser(sc);
                     UI.clearScreen();
                     break;
@@ -114,7 +115,8 @@ public class Main {
                     UI.clearScreen();
                     break;
                 case 7:
-                    System.out.println("feature under development");
+                    UI.clearScreen();
+                    UpdateInfo.updateInfo(student, auth); // Assuming `auth` is passed in as an additional parameter
                     UI.waitForUser(sc);
                     UI.clearScreen();
                     break;
@@ -130,7 +132,6 @@ public class Main {
             }
         }
     }
-    
     
     
     private static void showAdminMenu(Scanner sc, WalletManager walletManager) {
