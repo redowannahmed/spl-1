@@ -18,80 +18,91 @@ public class AuthenticationHelper {
         String password;
         
         do {
-            System.out.println("Enter username:");
+            System.out.println(UI.MINT_GREEN + "Enter username:" + UI.RESET);
             username = sc.nextLine().trim();
             if (username.isEmpty()) {
-                System.out.println("Username cannot be blank. Please enter a valid username.");
+                UI.printMessage("username cannot be empty", "error");
             }
         } while (username.isEmpty());
         
         do {
-            System.out.println("Enter password:");
+            System.out.println(UI.MINT_GREEN + "Enter password:" + UI.RESET);
             password = sc.nextLine().trim();
             if (password.isEmpty()) {
-                System.out.println("Password cannot be blank. Please enter a valid password.");
+                UI.printMessage("Password cannot be blank. Please enter a valid password.", "error");
             }
         } while (password.isEmpty());
     
         User user = auth.login(username, password);
         if (user != null) {
-            return user; // Return user if login is successful
+            return user;
         } else {
-            System.out.println("Login failed. Invalid username or password.");
-            UI.waitForUser(sc); // Wait for user acknowledgment before clearing screen
+            UI.printMessage("Login failed. Invalid username or password.", "error");
             UI.clearScreen();
         }
-        return null; // Return null if login fails
+        return null; 
     }
-    
     
     public void registerHelper(Scanner sc) {
         String name;
         String username;
         int id;
         String password;
-    
-        do {
-            System.out.println("Enter name:");
-            name = sc.nextLine().trim();
-            if (name.isEmpty()) {
-                System.out.println("Name cannot be blank. Please enter a valid name.");
-            }
-        } while (name.isEmpty());
-    
-        do {
-            System.out.println("Enter username:");
-            username = sc.nextLine().trim();
-            if (username.isEmpty()) {
-                System.out.println("Username cannot be blank. Please enter a valid username.");
-            }
-        } while (username.isEmpty());
-    
-        System.out.println("Enter student ID:");
+        
         while (true) {
-            if (sc.hasNextInt()) {
-                id = sc.nextInt();
-                sc.nextLine(); // Clear the newline character
-                break;
-            } else {
-                System.out.println("Invalid ID. Please enter a numeric ID:");
-                sc.next(); // Consume invalid input
+            do {
+                UI.printMessage("Enter name:", "info");
+                name = sc.nextLine().trim();
+                if (name.isEmpty()) {
+                    UI.printMessage("Name cannot be blank. Please enter a valid name.", "error");
+                }
+            } while (name.isEmpty());
+    
+            do {
+                UI.printMessage("Enter username:", "info");
+                username = sc.nextLine().trim();
+                if (username.isEmpty()) {
+                    UI.printMessage("Username cannot be blank. Please enter a valid username.", "error");
+                }
+            } while (username.isEmpty());
+    
+            UI.printMessage("Enter Student ID:", "info");
+    
+            while (true) {
+                if (sc.hasNextInt()) {
+                    id = sc.nextInt();
+                    sc.nextLine(); 
+                    break;
+                } else {
+                    UI.printMessage("Invalid ID. Please enter a numeric ID:", "error");
+                    sc.next(); 
+                }
+            }
+    
+            do {
+                UI.printMessage("Enter password:", "info");
+                password = sc.nextLine().trim();
+                if (password.isEmpty()) {
+                    UI.printMessage("Password cannot be left blank", "error");
+                }
+            } while (password.isEmpty());
+    
+            try {
+                auth.registerStudent(name, username, id, password);
+                UI.printMessage("student has been registered successfully", "success");
+                break; 
+            } catch (DuplicateUsernameException | DuplicateIDException e) {
+                UI.printMessage("Registration failed: " + e.getMessage(), "error");
+                
+                UI.printMessage("Do you want to retry? (Y/N)", "info");
+                String retry = sc.nextLine().trim().toUpperCase();
+                UI.clearScreen();
+
+                if (retry.equals("N")) {
+                    break;
+                }
             }
         }
-    
-        do {
-            System.out.println("Enter password:");
-            password = sc.nextLine().trim();
-            if (password.isEmpty()) {
-                System.out.println("Password cannot be blank. Please enter a valid password.");
-            }
-        } while (password.isEmpty());
-    
-        try {
-            auth.registerStudent(name, username, id, password);
-        } catch (DuplicateUsernameException | DuplicateIDException e) {
-            System.out.println("Registration failed: " + e.getMessage());
-        }
-    }
+    }    
     
 }

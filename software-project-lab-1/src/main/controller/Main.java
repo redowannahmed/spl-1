@@ -1,6 +1,6 @@
 package controller;
-import java.util.*;
 
+import java.util.Scanner;
 import UI.UI;
 import auth.Authentication;
 import auth.AuthenticationHelper;
@@ -21,41 +21,49 @@ public class Main {
 
         while (true) {
             UI.clearScreen();
-            System.out.println("\nChoose an option: ");
-            System.out.println("1. Login");
-            System.out.println("2. Register");
-            System.out.println("3. Exit");
-    
+            UI.showBanner();
+
+            String[] mainMenuOptions = {"Login", "Register", "Exit"};
+            UI.printBoxedMenu(mainMenuOptions, "Main Menu");
+
             int choice = sc.nextInt();
             sc.nextLine();
-    
+
             switch (choice) {
-                case 1:
+                case 1: 
+                    UI.clearScreen();
                     User loggedInUser = authHelper.loginHelper(sc);
+
                     if (loggedInUser != null) {
-                        UI.waitForUser(sc); 
-                        UI.clearScreen();  
-                        
+                        UI.showLoading("Redirecting to your dashboard");
+                        UI.clearScreen();
+
                         if (loggedInUser instanceof Admin) {
                             showAdminMenu(sc, walletManager);
                         } else if (loggedInUser instanceof Student) {
                             showStudentMenu(sc, (Student) loggedInUser, auth, walletManager, tokenHelper);
                         }
+
+                    } else {
+                        UI.printMessage("User couldn't be found", "error");
+                        UI.waitForUserInput("Press enter to go back to main panel", sc);
+                        break;
                     }
                     break;
-                case 2:
+
+                case 2: 
+                    UI.clearScreen();
                     authHelper.registerHelper(sc);
-                    UI.waitForUser(sc);  // Pause for registration success or error message
-                    UI.clearScreen();    // Clear screen after user acknowledges
+                    UI.waitForUserInput("press enter to go back to main panel", sc);
                     break;
-                case 3:
-                    System.out.println("Exiting program.");
+
+                case 3: 
+                    UI.printMessage("Thank you for using Token-Table!", "info");
                     sc.close();
                     return;
+
                 default:
-                    System.out.println("Invalid option. Please choose again.");
-                    UI.waitForUser(sc);
-                    UI.clearScreen();
+                    UI.printMessage("Invalid option. Please try again.", "error");
             }
         }
     }
@@ -63,109 +71,109 @@ public class Main {
     private static void showStudentMenu(Scanner sc, Student student, Authentication auth, WalletManager walletManager, TokenManager tokenManager) {
         while (true) {
             UI.clearScreen();
-            System.out.println("\nStudent Menu:");
-            System.out.println("1. Recharge Wallet");
-            System.out.println("2. View Balance");
-            System.out.println("3. Buy Token");
-            System.out.println("4. View your pending recharge requests");
-            System.out.println("5. View your purchase history");
-            System.out.println("6. View Menu");
-            System.out.println("7. Update Info");
-            System.out.println("8. Exit");
-    
+            String[] studentMenuOptions = {
+                "Recharge Wallet", "View Balance", "Buy Token",
+                "View Pending Recharge Requests", "View Purchase History",
+                "View Menu", "Update Info", "Logout"
+            };
+            UI.printBoxedMenu(studentMenuOptions, "Student Dashboard");
+
             int choice = sc.nextInt();
             sc.nextLine();
-    
+
             switch (choice) {
-                case 1:
-                    System.out.println("Enter recharge amount:");
+                case 1: 
+                    UI.clearScreen();
+                    UI.printMessage("Enter recharge amount:", "info");
                     int amount = sc.nextInt();
                     sc.nextLine();
-    
+
                     String slipId;
+
                     while (true) {
-                        System.out.println("Enter slip ID:");
+                        UI.printMessage("Enter slip ID:", "info");
                         slipId = sc.nextLine();
                         if (!walletManager.isDuplicateSlipId(slipId)) {
                             break;
                         }
-                        System.out.println("Error: Slip ID already exists. Please enter a unique slip ID.");
+                        UI.printMessage("Error: Slip ID already exists. Try again.", "error");
                     }
-    
-                    walletManager.requestRecharge(student.getUsername(), amount, slipId);
-                    UI.waitForUser(sc);  // Pause after recharge request to show confirmation
-                    UI.clearScreen();    // Clear screen after confirmation
+
+                    if (walletManager.requestRecharge(student.getUsername(), amount, slipId)) {
+                        UI.printMessage("Recharge request submitted", "success");
+                        UI.waitForUserInput("Press enter to go back to main panel", sc);
+                    } else {
+                        UI.printMessage("Error requesting recharge", "error");
+                        UI.waitForUserInput("Press enter to go back to main panel", sc);
+                    }
                     break;
-                case 2:
-                    System.out.println("Current Balance: " + student.getWallet().getBalance());
-                    UI.waitForUser(sc);  // Pause to allow the user to view the balance
-                    UI.clearScreen();    // Clear screen after showing balance
-                    break;
-                case 3:
-                    UI.clearScreen();    // Clear screen before showing token options
-                    tokenManager.showTokenBuyingOptions(student, sc);
-                    UI.waitForUser(sc);  // Pause to show token purchase confirmation
-                    UI.clearScreen();    // Clear screen before returning to main student menu
-                    break;
-                case 4:
+
+                case 2: 
                     UI.clearScreen();
-                    System.out.println("Pending Recharge Requests:");
-                    walletManager.viewPendingRequests(student.getUsername());
-                    UI.waitForUser(sc); 
-                    UI.clearScreen();  
+                    UI.printMessage("Your current balance: " + student.getWallet().getBalance(), "info");
+                    UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
-                case 5:
+
+                case 3: 
+                    UI.clearScreen();
+                    tokenManager.showTokenBuyingOptions(student, sc);
+                    break;
+                    
+                case 4: 
+                    UI.clearScreen();
+                    walletManager.viewPendingRequests(student.getUsername());
+                    UI.waitForUserInput("Press enter to go back to main panel", sc);
+                    break;
+
+                case 5: 
                     UI.clearScreen();
                     tokenManager.viewPurchaseHistory(student);
-                    UI.waitForUser(sc);
-                    UI.clearScreen();
+                    UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
+
                 case 6: 
-                    System.out.println("feature under development");
-                    UI.waitForUser(sc);
-                    UI.clearScreen();
+                    UI.printMessage("This feature is under development.", "info");
+                    UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
+                
                 case 7:
                     UI.clearScreen();
-                    UpdateInfo.updateInfo(student, auth, sc); // Assuming `auth` is passed in as an additional parameter
-                    UI.waitForUser(sc);
-                    UI.clearScreen();
+                    UpdateInfo.updateInfo(student, auth, sc);
+                    UI.waitForUserInput("Press Enter to go back to the main panel", sc);
                     break;
-                case 8:
-                    System.out.println("Logging out...");
-                    UI.waitForUser(sc);  // Pause for logout message
-                    UI.clearScreen();    // Clear screen after logout
+
+                case 8: 
+                    UI.printMessage("Logging out...", "info");
                     return;
+
                 default:
-                    System.out.println("Invalid option. Please choose again.");
-                    UI.waitForUser(sc);  // Pause for invalid option message
-                    UI.clearScreen();    // Clear screen to show menu again
+                    UI.printMessage("Invalid option. Please try again.", "error");
+                    UI.waitForUserInput("Press enter to go back to main panel", sc);
             }
         }
     }
-    
-    
+
     private static void showAdminMenu(Scanner sc, WalletManager walletManager) {
         while (true) {
-            System.out.println("\nAdmin Menu:");
-            System.out.println("1. View and Process Recharge Requests");
-            System.out.println("2. Logout");
-    
+            UI.clearScreen();
+            String[] adminMenuOptions = {"View and Process Recharge Requests", "Logout"};
+            UI.printBoxedMenu(adminMenuOptions, "Admin Dashboard");
+
             int choice = sc.nextInt();
             sc.nextLine();
-    
+
             switch (choice) {
-                case 1:
-                    walletManager.processRechargeRequests(sc);
-                    UI.waitForUser(sc); 
+                case 1: 
                     UI.clearScreen();
+                    walletManager.processRechargeRequests(sc);
+                    UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
                 case 2:
-                    System.out.println("Logging out...");
-                    UI.waitForUser(sc); 
+                    UI.printMessage("Logging out...", "info");
                     return;
                 default:
-                    System.out.println("Invalid option. Please choose again.");
+                    UI.printMessage("Invalid option. Please try again.", "error");
+                    UI.waitForUserInput("Press enter to go back to main panel", sc);
             }
         }
     }

@@ -6,6 +6,7 @@ import exceptions.DuplicateUsernameException;
 import user.Admin;
 import user.Student;
 import user.User;
+import UI.UI;
 
 public class Authentication {
     private static final String STUDENTS_FILE = "students.txt";
@@ -13,7 +14,7 @@ public class Authentication {
 
     public User login(String username, String password) {
         if (username.equals(admin.getUsername()) && password.equals(admin.getPassword())) {
-            System.out.println("Logged in as Admin.");
+            UI.printMessage("Logged in as Admin", "success");
             return admin;
         } else {
             return checkStudentCredentials(username, password);
@@ -26,12 +27,12 @@ public class Authentication {
             while ((line = reader.readLine()) != null) {
                 Student student = Student.fromString(line);
                 if (student.getUsername().equals(username) && student.getPassword().equals(password)) {
-                    System.out.println("Logged in as Student: " + student.getName());
+                    UI.printMessage("Logged in as: " + student.getName(), "success");
                     return student;
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error reading students file: " + e.getMessage());
+            UI.printMessage("error reading from file", "error");
         }
         return null;
     }
@@ -51,9 +52,8 @@ public class Authentication {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(STUDENTS_FILE, true))) {
             writer.write(student.toString());
             writer.newLine();
-            System.out.println("Student registered successfully.");
         } catch (IOException e) {
-            System.out.println("Error writing to students file: " + e.getMessage());
+            UI.printMessage("Error writing to students file: " + e.getMessage(), "error");
         }
     }
 

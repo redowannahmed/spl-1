@@ -1,9 +1,11 @@
 package wallet;
 import java.io.*;
 import java.util.*;
+import java.time.format.DateTimeFormatter;
 
 import auth.Authentication;
 import user.Student;
+import UI.UI;
 
 public class WalletManager {
     private static final String RECHARGE_REQUESTS_FILE = "rechargeRequests.txt";
@@ -28,15 +30,15 @@ public class WalletManager {
         return false;
     }
 
-    public void requestRecharge(String username, int amount, String slipId) {
+    public boolean requestRecharge(String username, int amount, String slipId) {
         if (amount < 0) {
-            System.out.println("Error: Recharge amount cannot be negative.");
-            return; 
+            UI.printMessage("recharge amount cannot be negative", "error");
+            return false;
         }
     
         if (isDuplicateSlipId(slipId)) {
-            System.out.println("Error: Slip ID already exists. Please enter a unique slip ID.");
-            return;
+            UI.printMessage("slip ID cannot be duplicate", "error");
+            return false;
         }
     
         RechargeRequest request = new RechargeRequest(username, amount, slipId);
@@ -44,10 +46,12 @@ public class WalletManager {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(RECHARGE_REQUESTS_FILE, true))) {
             writer.write(request.toString());
             writer.newLine();
-            System.out.println("Recharge request submitted successfully.");
         } catch (IOException e) {
-            System.out.println("Error writing to recharge requests file: " + e.getMessage());
+            UI.printMessage("Error writing to recharge requests file: " + e.getMessage(), "error");
+            return false;
         }
+
+        return true;
     }
     
 
@@ -75,21 +79,29 @@ public class WalletManager {
         }
     
         if (studentRequests.isEmpty()) {
-            System.out.println("No pending recharge requests found for " + username + ".");
+            System.out.println(UI.colorText("No pending recharge requests found for " + username + ".", UI.EMERALD_GREEN));
             return;
         }
     
-        System.out.printf("%-5s %-10s %-15s %-12s%n", "No.", "Amount", "Slip ID", "Date");
-        System.out.println("---------------------------------------------");
+        String[] headers = { "No.", "Amount", "Slip ID", "Date" };
+        String[][] data = new String[studentRequests.size()][4];
+    
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     
         int count = 0;
         for (RechargeRequest request : studentRequests) {
+            data[count][0] = String.valueOf(count + 1);
+            data[count][1] = String.valueOf(request.getAmount());
+            data[count][2] = request.getSlipId();
+            data[count][3] = request.getDate().format(formatter);
             count++;
-            System.out.printf("%-5d %-10d %-15s %-12s%n", count, request.getAmount(), request.getSlipId(), request.getDate());
         }
-        System.out.println("---------------------------------------------");
-    }    
-
+    
+        System.out.println(UI.boldText(UI.colorText("Pending Recharge Requests for " + username, UI.EMERALD_GREEN)));
+        System.out.println();
+        UI.printTable(headers, data);
+    }
+    
     public void processRechargeRequests(Scanner sc) {
         List<RechargeRequest> requests = loadRequests();
     
@@ -98,18 +110,22 @@ public class WalletManager {
             return;
         }
     
-        // Print table header
-        System.out.printf("%-5s %-15s %-10s %-15s %-12s%n", "No.", "Username", "Amount", "Slip ID", "Date");
-        System.out.println("-------------------------------------------------------------");
+        String[] headers = {"No.", "Username", "Amount", "Slip ID", "Date"};
     
-        // Display each request in a structured format
+        String[][] data = new String[requests.size()][headers.length];
         int cnt = 0;
         for (RechargeRequest request : requests) {
+            data[cnt][0] = String.valueOf(cnt + 1);
+            data[cnt][1] = request.getUsername();
+            data[cnt][2] = String.valueOf(request.getAmount());
+            data[cnt][3] = request.getSlipId();
+            data[cnt][4] = request.getDate().toString(); 
             cnt++;
-            System.out.printf("%-5d %-15s %-10d %-15s %-12s%n", cnt, request.getUsername(), request.getAmount(), request.getSlipId(), request.getDate());
         }
     
-        System.out.println("-------------------------------------------------------------");
+        UI.clearScreen();
+        UI.printTable(headers, data);
+    
         System.out.println("Enter the slip ID of the request you want to process:");
         String slipId = sc.nextLine();
     
@@ -137,6 +153,7 @@ public class WalletManager {
             System.out.println("Invalid slip ID. Please try again.");
         }
     }
+    
 
     private void approveRequest(RechargeRequest request) {
         Student student = auth.findStudentByUsername(request.getUsername());
@@ -175,7 +192,7 @@ public class WalletManager {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts[0].equals(username)) {
-                    lines.add(username + "," + newBalance); // Update balance
+                    lines.add(username + "," + newBalance); 
                     found = true;
                 } else {
                     lines.add(line);
