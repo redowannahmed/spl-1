@@ -6,48 +6,64 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+import UI.UI;
 import user.Student;
 
 public class UpdateInfo
 {
     Scanner sc = new Scanner(System.in);
 
-    public static void updateInfo(Student student, Authentication auth, Scanner sc) {
-    
+        public static void updateInfo(Student student, Authentication auth, Scanner sc) {
         while (true) {
-            System.out.println("\nUpdate Info:");
-            System.out.println("1. Update Username");
-            System.out.println("2. Update Password");
-            System.out.println("3. Return to Menu");
-    
+            UI.clearScreen();
+            UI.printBoxedMenu(new String[]{
+                    "Update Username",
+                    "Update Password",
+                    "Return to Main Menu"
+            }, "Update Info Panel");
+
+            System.out.print(UI.colorText("Enter your choice: ", UI.EMERALD_GREEN));
             int choice = sc.nextInt();
-            sc.nextLine();
-    
+            sc.nextLine(); 
+
             switch (choice) {
                 case 1:
-                    System.out.println("Enter new username:");
+                    UI.clearScreen();
+                    System.out.print(UI.colorText("Enter new username: ", UI.EMERALD_GREEN));
                     String newUsername = sc.nextLine();
+
                     if (updateUsername(student, auth, newUsername)) {
-                        System.out.println("Username updated successfully.");
+                        UI.printMessage("Username updated successfully.", "success");
                     } else {
-                        System.out.println("Please try again with a different username.");
+                        UI.printMessage("Error: Username already exists or update failed.", "error");
                     }
+                    UI.waitForUserInput("Press Enter to continue...", sc);
                     break;
+
                 case 2:
-                    System.out.println("Enter new password:");
+                    UI.clearScreen();
+                    System.out.print(UI.colorText("Enter new password: ", UI.EMERALD_GREEN));
                     String newPassword = sc.nextLine();
-                    updatePassword(student, auth, newPassword);
-                    System.out.println("Password updated successfully.");
+
+                    if (newPassword.trim().isEmpty()) {
+                        UI.printMessage("Password cannot be empty.", "error");
+                    } else {
+                        updatePassword(student, auth, newPassword);
+                        UI.printMessage("Password updated successfully.", "success");
+                    }
+                    UI.waitForUserInput("Press Enter to continue...", sc);
                     break;
+
                 case 3:
-                    return; // Exit update info menu
+                    UI.printMessage("Returning to the main menu...", "info");
+                    return;
+
                 default:
-                    System.out.println("Invalid option. Please choose again.");
+                    UI.printMessage("Invalid option. Please try again.", "error");
+                    UI.waitForUserInput("Press Enter to continue...", sc);
             }
         }
-    }
-    
-    
+    }    
 
     public static boolean updateUsername(Student student, Authentication auth, String newUsername) {
         List<Student> students = new ArrayList<>();
