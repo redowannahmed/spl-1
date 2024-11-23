@@ -31,7 +31,7 @@ public class UI {
    public static final String BOX_COLOR = MUTED_TEAL;
     public static final String TITLE_COLOR = EMERALD_GREEN;
    public static final String MENU_OPTION_COLOR = BRIGHT_WHITE;
-    private static final String PROMPT_COLOR = MINT_GREEN;
+    public static final String PROMPT_COLOR = MINT_GREEN;
     private static final String INPUT_COLOR = MINT_GREEN;
     private static final String HEADER_COLOR = SLATE_BLUE;
 

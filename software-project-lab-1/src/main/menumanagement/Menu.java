@@ -10,15 +10,15 @@ public class Menu {
             "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
     };
     private static final String[] MEAL_TYPES = {"Breakfast", "Lunch", "Dinner"};
-    private String[][] menu; // 7 days x 3 meal types
+    private String[][] menu;
 
-    // Constructor to load the menu or initialize with defaults
+
     public Menu() {
         menu = new String[7][3];
         loadMenu();
     }
 
-    // Load menu from file or initialize with default values
+
     private void loadMenu() {
         File file = new File(FILE_NAME);
         if (file.exists()) {
@@ -26,9 +26,9 @@ public class Menu {
                 for (int i = 0; i < 7; i++) {
                     String line = reader.readLine();
                     if (line != null) {
-                        menu[i] = line.split(",", 3); // Split by commas
+                        menu[i] = line.split(",", 3);
                     } else {
-                        menu[i] = new String[]{"-", "-", "-"}; // Default empty values
+                        menu[i] = new String[]{"-", "-", "-"};
                     }
                 }
             } catch (IOException e) {
@@ -40,16 +40,16 @@ public class Menu {
         }
     }
 
-    // Initialize menu with default values
+
     private void initializeDefaultMenu() {
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 3; j++) {
-                menu[i][j] = "-"; // Default empty value
+                menu[i][j] = "-";
             }
         }
     }
 
-    // Save the menu to file
+
     private void saveMenu() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (int i = 0; i < 7; i++) {
@@ -61,7 +61,7 @@ public class Menu {
         }
     }
 
-    // View the menu
+
     public void viewMenu() {
         System.out.println("MENU:");
         for (int i = 0; i < 7; i++) {
@@ -72,7 +72,7 @@ public class Menu {
         }
     }
 
-    // Update the menu
+
     public void updateMenu() {
         Scanner scanner = new Scanner(System.in);
 
@@ -100,7 +100,7 @@ public class Menu {
         System.out.println("Menu updated successfully!");
     }
 
-    // Helper method to get day index
+
     private int getDayIndex(String day) {
         for (int i = 0; i < DAYS.length; i++) {
             if (DAYS[i].equalsIgnoreCase(day)) {
@@ -110,7 +110,7 @@ public class Menu {
         return -1;
     }
 
-    // Helper method to get meal index
+
     private int getMealIndex(String meal) {
         for (int i = 0; i < MEAL_TYPES.length; i++) {
             if (MEAL_TYPES[i].equalsIgnoreCase(meal)) {
@@ -120,35 +120,6 @@ public class Menu {
         return -1;
     }
 
-    // Main method for testing
-    public static void main(String[] args) {
-        Menu menu = new Menu();
-        Scanner scanner = new Scanner(System.in);
 
-        while (true) {
-            System.out.println("\nMenu Options:");
-            System.out.println("1. View Menu");
-            System.out.println("2. Update Menu");
-            System.out.println("3. Exit");
-            System.out.print("Choose an option: ");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-
-            switch (choice) {
-                case 1:
-                    menu.viewMenu();
-                    break;
-
-                case 2:
-                    menu.updateMenu();
-                    break;
-                case 3:
-                    System.out.println("Exiting...");
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-            }
-        }
-    }
+   
 }

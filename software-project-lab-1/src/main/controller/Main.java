@@ -8,6 +8,7 @@ import auth.UpdateInfo;
 import token.TokenManager;
 import user.Admin;
 import user.Student;
+
 import user.User;
 import wallet.WalletManager;
 import menumanagement.MenuManager;
@@ -18,7 +19,7 @@ public class Main {
         WalletManager walletManager = new WalletManager(auth);
         AuthenticationHelper authHelper = new AuthenticationHelper(auth);
         TokenManager tokenHelper = new TokenManager(walletManager);
-        MenuManager menuManager = new MenuManager(); // Instance of MenuManager
+        MenuManager menuManager = new MenuManager();
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -41,7 +42,7 @@ public class Main {
                         UI.clearScreen();
 
                         if (loggedInUser instanceof Admin) {
-                            showAdminMenu(sc, walletManager, menuManager); // Pass menuManager to Admin
+                            showAdminMenu(sc, walletManager, menuManager);
                         } else if (loggedInUser instanceof Student) {
                             showStudentMenu(sc, (Student) loggedInUser, auth, walletManager, tokenHelper, menuManager); // Pass menuManager to Student
                         }
@@ -162,7 +163,7 @@ public class Main {
                     "View and Process Recharge Requests",
                     "View Menu",
                     "Update Menu",
-                    "Change Meal Time Labels", // New option
+                    "Change Meal Time Labels",
                     "Logout"
             };
             UI.printBoxedMenu(adminMenuOptions, "Admin Dashboard");
@@ -177,19 +178,19 @@ public class Main {
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
 
-                case 2: // View menu
+                case 2:
                     UI.clearScreen();
                     menuManager.viewMenu();
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
 
-                case 3: // Update menu
+                case 3:
                     UI.clearScreen();
                     menuManager.updateMenu(sc);
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
 
-                case 4: // Change meal time labels
+                case 4:
                     UI.clearScreen();
                     menuManager.changeMealTimeNames(sc);
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
