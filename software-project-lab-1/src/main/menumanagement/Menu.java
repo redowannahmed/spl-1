@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Menu {
-    private static final String FILE_NAME = "C:\\Users\\wahid\\Downloads\\spl-1-main (2)\\spl-1-main\\software-project-lab-1\\menu.txt";
+    private static final String FILE_NAME = "menu.txt";
     private static final String[] DAYS = {
             "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
     };
@@ -121,5 +121,5 @@ public class Menu {
     }
 
 
-   
+
 }
