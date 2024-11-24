@@ -13,7 +13,7 @@ public class MenuManager {
     private final String[] breakfastMenu = new String[7];
     private final String[] lunchMenu = new String[7];
     private final String[] dinnerMenu = new String[7];
-    private final String fileName = "menu.txt";
+    private final String fileName = "spl-1-main\\menu.txt";
 
 
     private String breakfastLabel = "Breakfast";

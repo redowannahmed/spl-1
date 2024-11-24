@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Menu {
-    private static final String FILE_NAME = "menu.txt";
+    private static final String FILE_NAME = "spl-1-main\\menu.txt";
     private static final String[] DAYS = {
             "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
     };
