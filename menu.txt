@@ -1,0 +1,8 @@
+Breakfast,Lunch,Dinner
+Tehari,Rice+Mutton,Fried Rice
+Bread+Jam,Rice+Beef,Rice+Egg
+Bread+Butter,Biriyani,Rice+ Fish
+Tehari,Rice+Mutton,Fried Rice
+Bread+Jam,Rice+Beef,Rice+Egg
+Bread+Butter,Biriyani,Rice+ Fish
+Luchi+Daal,Kacci,Nun-Grill
