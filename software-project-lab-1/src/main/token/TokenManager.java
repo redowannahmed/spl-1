@@ -72,8 +72,8 @@ public class TokenManager {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data[0].equals(student.getUsername())) {
-                    System.out.printf("| %-15s | %-20s  |\n", "Purchase Date:", data[2]);
-                    System.out.printf("| %-15s | %-20s  |\n", "Token Type:", data[1]);
+                    System.out.printf("| %-15s | %-20s  |\n", "Purchase Date & Time:", data[2]);
+                    System.out.printf("| %-15s | %-20s  |\n", "Token Type:          ", data[1]);
                     System.out.println("+-----------------------------------------+");
                     hasPurchases = true;
                 }
@@ -172,7 +172,7 @@ public class TokenManager {
         String[][] data = {
             {"Student Name", studentName},
                 {"Student Id", String.valueOf(studentId)},
-            {"Purchase Date", formattedDate},
+            {"Purchase Date & Time", formattedDate},
             {"Token Type", tokenType},
             {"Current Balance", currentBalance}
         };

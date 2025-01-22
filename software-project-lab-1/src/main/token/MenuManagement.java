@@ -97,7 +97,7 @@ public class MenuManagement
         System.out.println("1. Breakfast");
         System.out.println("2. Lunch");
         System.out.println("3. Dinner");
-        System.out.print("Enter number of the meal you want to edit: ");
+        System.out.print("Enter the meal you want to edit (e.g., 1,2,3): ");
         int mealChoice = scanner.nextInt();
         scanner.nextLine(); 
 
