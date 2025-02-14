@@ -1,10 +1,11 @@
 package controller;
 
-import java.util.Scanner;
 import UI.UI;
 import auth.Authentication;
 import auth.AuthenticationHelper;
 import auth.UpdateInfo;
+import java.util.Scanner;
+import token.MenuManagement;
 import token.TokenManager;
 import user.Admin;
 import user.Student;
@@ -132,7 +133,8 @@ public class Main {
                     break;
 
                 case 6: 
-                    UI.printMessage("This feature is under development.", "info");
+                    UI.clearScreen();
+                    MenuManagement.displayMenu();
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
                 
@@ -156,12 +158,12 @@ public class Main {
     private static void showAdminMenu(Scanner sc, WalletManager walletManager) {
         while (true) {
             UI.clearScreen();
-            String[] adminMenuOptions = {"View and Process Recharge Requests", "Logout"};
+            String[] adminMenuOptions = {"View and Process Recharge Requests", "Show Menu Options", "Logout"};
             UI.printBoxedMenu(adminMenuOptions, "Admin Dashboard");
-
+    
             int choice = sc.nextInt();
             sc.nextLine();
-
+    
             switch (choice) {
                 case 1: 
                     UI.clearScreen();
@@ -169,6 +171,10 @@ public class Main {
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
                 case 2:
+                    UI.clearScreen();
+                    MenuManagement.showMenuOptions(sc); 
+                    break;
+                case 3:
                     UI.printMessage("Logging out...", "info");
                     return;
                 default:
@@ -177,4 +183,5 @@ public class Main {
             }
         }
     }
+    
 }

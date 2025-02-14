@@ -30,7 +30,7 @@ public class UI {
 
     private static final String BOX_COLOR = MUTED_TEAL;
     private static final String TITLE_COLOR = EMERALD_GREEN;
-    private static final String MENU_OPTION_COLOR = BRIGHT_WHITE;
+    private static final String MENU_OPTION_COLOR = OFF_WHITE;
     private static final String PROMPT_COLOR = MINT_GREEN;
     private static final String INPUT_COLOR = MINT_GREEN;
     private static final String HEADER_COLOR = SLATE_BLUE;
@@ -60,7 +60,7 @@ public class UI {
         System.out.print(colorText(message, INFO_COLOR));
         for (int i = 0; i < 3; i++) {
             try {
-                Thread.sleep(250);
+                Thread.sleep(300);
                 System.out.print(colorText(".", INFO_COLOR));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -85,30 +85,36 @@ public class UI {
 
     public static void printBoxedMenu(String[] options, String title) {
         int maxLength = title.length();
-
         for (String option : options) {
             maxLength = Math.max(maxLength, option.length() + 4);
         }
-
-        int boxWidth = Math.max(50, maxLength + 4);
+        int boxWidth = Math.max(50, maxLength + 4); 
         String horizontalBorder = BOX_COLOR + "═".repeat(boxWidth) + RESET;
-
+    
         System.out.println(BOX_COLOR + "╔" + horizontalBorder + "╗" + RESET);
+    
         String centeredTitle = centerText(title, boxWidth);
         System.out.println(BOX_COLOR + "║" + TITLE_COLOR + BOLD + centeredTitle + RESET + BOX_COLOR + "║" + RESET);
+    
         System.out.println(BOX_COLOR + "║" + " ".repeat(boxWidth) + "║" + RESET);
-
+    
         for (int i = 0; i < options.length; i++) {
             String optionText = String.format("%d. %s", i + 1, options[i]);
             String paddedOption = String.format("%-" + boxWidth + "s", " " + optionText);
             System.out.println(BOX_COLOR + "║" + MENU_OPTION_COLOR + paddedOption + RESET + BOX_COLOR + "║" + RESET);
+    
+            if (i < options.length - 1) {
+                System.out.println(BOX_COLOR + "║" + " ".repeat(boxWidth) + "║" + RESET);
+            }
         }
-
+    
         System.out.println(BOX_COLOR + "║" + " ".repeat(boxWidth) + "║" + RESET);
+    
         System.out.println(BOX_COLOR + "╚" + horizontalBorder + "╝" + RESET);
+    
         System.out.print(colorText("Select an option: ", PROMPT_COLOR));
     }
-
+    
     public static void printMessage(String message, String type) {
         String color;
         switch (type.toLowerCase()) {
@@ -122,6 +128,11 @@ public class UI {
     }
     
     public static void printTable(String[] headers, String[][] data) {
+        final String RESET_COLOR = "\033[0m";
+        final String TEXT_COLOR = BRIGHT_WHITE;  // Bright white
+        final String BORDER_COLOR = BOX_COLOR; // Cyan for borders
+    
+        // Calculate column widths
         int[] colWidths = new int[headers.length];
         for (int i = 0; i < headers.length; i++) {
             colWidths[i] = headers[i].length();
@@ -130,35 +141,62 @@ public class UI {
                     colWidths[i] = Math.max(colWidths[i], row[i].length());
                 }
             }
-            colWidths[i] += 2;
+            colWidths[i] += 3; 
         }
     
+        // Create table borders
+        StringBuilder borderBuilder = new StringBuilder();
+        borderBuilder.append(BORDER_COLOR).append("┌");
+        for (int i = 0; i < colWidths.length; i++) {
+            borderBuilder.append("─".repeat(colWidths[i]));
+            borderBuilder.append(i == colWidths.length - 1 ? "┐" : "┬");
+        }
+        String topBorder = borderBuilder.append(RESET_COLOR).toString();
+    
+        borderBuilder.setLength(0);
+        borderBuilder.append(BORDER_COLOR).append("├");
+        for (int i = 0; i < colWidths.length; i++) {
+            borderBuilder.append("─".repeat(colWidths[i]));
+            borderBuilder.append(i == colWidths.length - 1 ? "┤" : "┼");
+        }
+        String middleBorder = borderBuilder.append(RESET_COLOR).toString();
+    
+        borderBuilder.setLength(0);
+        borderBuilder.append(BORDER_COLOR).append("└");
+        for (int i = 0; i < colWidths.length; i++) {
+            borderBuilder.append("─".repeat(colWidths[i]));
+            borderBuilder.append(i == colWidths.length - 1 ? "┘" : "┴");
+        }
+        String bottomBorder = borderBuilder.append(RESET_COLOR).toString();
+    
+        // Create the row format string
         StringBuilder formatBuilder = new StringBuilder();
         for (int width : colWidths) {
-            formatBuilder.append("| %-").append(width).append("s ");
+            formatBuilder.append("│ ").append(TEXT_COLOR).append("%-").append(width - 2).append("s ").append(RESET_COLOR);
         }
-        formatBuilder.append("|\n");
+        formatBuilder.append("│\n");
         String format = formatBuilder.toString();
     
-        StringBuilder borderBuilder = new StringBuilder();
-        for (int width : colWidths) {
-            borderBuilder.append("+-").append("-".repeat(width)).append("-");
+        // Print the table
+        System.out.println(topBorder);
+    
+        // Print headers
+        System.out.printf(format, (Object[]) headers);
+        System.out.println(middleBorder);
+    
+        // Print data rows with horizontal separators
+        for (int i = 0; i < data.length; i++) {
+            System.out.printf(format, (Object[]) data[i]);
+            if (i < data.length - 1) {
+                System.out.println(middleBorder);
+            }
         }
-        borderBuilder.append("+");
-        String border = borderBuilder.toString();
-    
-        System.out.println(BOLD_BRIGHT_WHITE + border + RESET);
-        System.out.printf(BOLD_BRIGHT_WHITE + BOLD + format + RESET, (Object[]) headers);
-        System.out.println(BOLD_BRIGHT_WHITE + border + RESET);
-    
-        for (String[] row : data) {
-            System.out.printf(BOLD_BRIGHT_WHITE + format + RESET, (Object[]) row);
-        }
-    
-        System.out.println(BOLD_BRIGHT_WHITE + border + RESET);
+        System.out.println(bottomBorder);
     }
     
-
+    
+    
+    
     public static void showBanner() {
         String banner = """
             ╔════════════════════════════════════════════════╗
