@@ -82,10 +82,15 @@ public class AuthenticationHelper {
             do {
                 UI.printMessage("Enter password:", "info");
                 password = sc.nextLine().trim();
+                
                 if (password.isEmpty()) {
-                    UI.printMessage("Password cannot be left blank", "error");
+                    UI.printMessage("Password cannot be left blank.", "error");
+                } else if (!Authentication.isValidPassword(password)) {
+                    UI.printMessage("Password must contain at least 6 characters, including one uppercase letter, one lowercase letter, and one number.", "error");
+                    password = ""; // Reset password to prompt again
                 }
             } while (password.isEmpty());
+            
     
             try {
                 auth.registerStudent(name, username, id, password);
