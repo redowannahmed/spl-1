@@ -1,3 +1,4 @@
+
 package controller;
 
 import UI.UI;
@@ -31,7 +32,7 @@ public class Main {
             sc.nextLine();
 
             switch (choice) {
-                case 1: 
+                case 1:
                     UI.clearScreen();
                     User loggedInUser = authHelper.loginHelper(sc);
 
@@ -52,13 +53,13 @@ public class Main {
                     }
                     break;
 
-                case 2: 
+                case 2:
                     UI.clearScreen();
                     authHelper.registerHelper(sc);
                     UI.waitForUserInput("press enter to go back to main panel", sc);
                     break;
 
-                case 3: 
+                case 3:
                     UI.printMessage("Thank you for using Token-Table!", "info");
                     sc.close();
                     return;
@@ -73,9 +74,9 @@ public class Main {
         while (true) {
             UI.clearScreen();
             String[] studentMenuOptions = {
-                "Recharge Wallet", "View Balance", "Buy Token",
-                "View Pending Recharge Requests", "View Purchase History",
-                "View Menu", "Update Info", "Logout"
+                    "Recharge Wallet", "View Balance", "Buy Token",
+                    "View Pending Recharge Requests", "View Purchase History",
+                    "View Menu", "Update Info", "Logout"
             };
             UI.printBoxedMenu(studentMenuOptions, "Student Dashboard");
 
@@ -83,7 +84,7 @@ public class Main {
             sc.nextLine();
 
             switch (choice) {
-                case 1: 
+                case 1:
                     UI.clearScreen();
                     UI.printMessage("Enter recharge amount:", "info");
                     int amount = sc.nextInt();
@@ -109,24 +110,24 @@ public class Main {
                     }
                     break;
 
-                case 2: 
+                case 2:
                     UI.clearScreen();
                     UI.printMessage("Your current balance: " + student.getWallet().getBalance(), "info");
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
 
-                case 3: 
+                case 3:
                     UI.clearScreen();
                     tokenManager.showTokenBuyingOptions(student, sc);
                     break;
-                    
-                case 4: 
+
+                case 4:
                     UI.clearScreen();
                     walletManager.viewPendingRequests(student.getUsername());
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
 
-                case 5: 
+                case 5:
                     UI.clearScreen();
                     tokenManager.viewPurchaseHistory(student);
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
@@ -137,14 +138,14 @@ public class Main {
                     MenuManagement.displayMenu();
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
-                
+
                 case 7:
                     UI.clearScreen();
                     UpdateInfo.updateInfo(student, auth, sc);
                     UI.waitForUserInput("Press Enter to go back to the main panel", sc);
                     break;
 
-                case 8: 
+                case 8:
                     UI.printMessage("Logging out...", "info");
                     return;
 
@@ -165,7 +166,7 @@ public class Main {
             sc.nextLine();
     
             switch (choice) {
-                case 1: 
+                case 1:
                     UI.clearScreen();
                     walletManager.processRechargeRequests(sc);
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
@@ -185,3 +186,4 @@ public class Main {
     }
     
 }
+

@@ -72,8 +72,8 @@ public class TokenManager {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data[0].equals(student.getUsername())) {
-                    System.out.printf("| %-15s | %-20s  |\n", "Purchase Date:", data[2]);
-                    System.out.printf("| %-15s | %-20s  |\n", "Token Type:", data[1]);
+                    System.out.printf("| %-15s | %-20s  |\n", "Purchase Date & Time:", data[2]);
+                    System.out.printf("| %-15s | %-20s  |\n", "Token Type:          ", data[1]);
                     System.out.println("+-----------------------------------------+");
                     hasPurchases = true;
                 }
@@ -157,6 +157,7 @@ public class TokenManager {
 
     public void displayTokenPurchaseReceipt(Student student, String tokenType) {
         String studentName = student.getUsername();
+       int  studentId=student.getId();
         LocalDateTime purchaseDate = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = purchaseDate.format(formatter);
@@ -170,7 +171,8 @@ public class TokenManager {
         // Table data
         String[][] data = {
             {"Student Name", studentName},
-            {"Purchase Date", formattedDate},
+                {"Student Id", String.valueOf(studentId)},
+            {"Purchase Date & Time", formattedDate},
             {"Token Type", tokenType},
             {"Current Balance", currentBalance}
         };

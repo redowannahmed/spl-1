@@ -5,3 +5,4 @@ Tuesday;cornflakes, milk, banana;tuna sandwich, chips, apple;pasta, vegetable sa
 Wednesday;bagels, cream cheese, coffee;chicken salad, pita bread, orange;beef stew, bread, carrots
 Thursda;toast, avocado, smoothie;grilled shrimp, rice, salad;pizza, garlic bread, ice cream
 Friday;yogurt, granola, berries;burger, fries, pickle;dim, dim, dim
+

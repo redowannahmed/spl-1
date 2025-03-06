@@ -1,12 +1,12 @@
 package token;
 
-import UI.UI;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import UI.UI;
 
 public class MenuManagement
 {   
@@ -18,6 +18,7 @@ public class MenuManagement
     {
         try 
         {
+
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
             int index = 0;
@@ -29,9 +30,13 @@ public class MenuManagement
                 for (int i = 0; i < menuItems.length && i < menuData[index].length; i++) {
                     menuData[index][i] = menuItems[i] != null ? menuItems[i].trim() : "";
                 }
+                
+                
                 index++;
             }
+
             reader.close();
+
         }
         catch (IOException e)
         {
@@ -83,8 +88,7 @@ public class MenuManagement
         String day = scanner.nextLine().trim();
 
         int dayIndex = findDayIndex(day);
-        if (dayIndex == -1)
-        {
+        if (dayIndex == -1) {
             System.out.println("Invalid day entered. Please try again.");
             return;
         }
@@ -93,8 +97,7 @@ public class MenuManagement
         System.out.println("1. Breakfast");
         System.out.println("2. Lunch");
         System.out.println("3. Dinner");
-
-        System.out.print("Enter the meal you want to edit: ");
+        System.out.print("Enter the meal you want to edit (e.g., 1,2,3): ");
         int mealChoice = scanner.nextInt();
         scanner.nextLine(); 
 

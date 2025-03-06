@@ -1,8 +1,8 @@
 package token;
 public enum TokenType {
-    BREAKFAST(50),
-    LUNCH(100),
-    DINNER(150);
+    BREAKFAST(40),
+    LUNCH(70),
+    DINNER(70);
 
     private final int price;
 
