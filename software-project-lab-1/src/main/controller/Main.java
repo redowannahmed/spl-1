@@ -1,6 +1,7 @@
 package controller;
 
 import UI.UI;
+import analytics.AdminAnalytics;
 import auth.Authentication;
 import auth.AuthenticationHelper;
 import auth.UpdateInfo;
@@ -158,7 +159,7 @@ public class Main {
     private static void showAdminMenu(Scanner sc, WalletManager walletManager) {
         while (true) {
             UI.clearScreen();
-            String[] adminMenuOptions = {"View and Process Recharge Requests", "Show Menu Options", "Logout"};
+            String[] adminMenuOptions = {"View and Process Recharge Requests", "Show Menu Options", "View Analytics", "Logout"};
             UI.printBoxedMenu(adminMenuOptions, "Admin Dashboard");
     
             int choice = sc.nextInt();
@@ -174,7 +175,11 @@ public class Main {
                     UI.clearScreen();
                     MenuManagement.showMenuOptions(sc); 
                     break;
-                case 3:
+                case 3: 
+                    UI.clearScreen();
+                    AdminAnalytics.showAnalyticsMenu(sc);
+                    break;
+                case 4:
                     UI.printMessage("Logging out...", "info");
                     return;
                 default:
