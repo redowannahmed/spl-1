@@ -1,8 +1,8 @@
-Breakfast,Lunch,Dinner
-Tehari,Rice+Mutton,Fried Rice
-Bread+Jam,Rice+Beef,Rice+Egg
-Bread+Butter,Biriyani,Rice+ Fish
-Tehari,Rice+Mutton,Fried Rice
-Bread+Jam,Rice+Beef,Rice+Egg
-Bread+Butter,Biriyani,Rice+ Fish
-Luchi+Daal,Kacci,Nun-Grill
+Saturday;mutton, chips, juice;chicken curry, rice, salad;grilled fish, potatoes, watermelon
+Sunday;pancakes, honey, orange juice;grilled chicken, fries, coleslaw;kichuna, kichuna, kichuna
+Monday;omelette, toast, coffee;vegetable stir-fry, fried rice, soup;steak, mashed potatoes, green beans
+Tuesday;cornflakes, milk, banana;tuna sandwich, chips, apple;pasta, vegetable sauce, breadsticks
+Wednesday;bagels, cream cheese, coffee;chicken salad, pita bread, orange;beef stew, bread, carrots
+Thursda;toast, avocado, smoothie;grilled shrimp, rice, salad;pizza, garlic bread, ice cream
+Friday;yogurt, granola, berries;burger, fries, pickle;dim, dim, dim
+

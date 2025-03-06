@@ -1,11 +1,11 @@
 
 package controller;
 
-import java.util.Scanner;
 import UI.UI;
 import auth.Authentication;
 import auth.AuthenticationHelper;
 import auth.UpdateInfo;
+import java.util.Scanner;
 import token.MenuManagement;
 import token.TokenManager;
 import user.Admin;
@@ -133,7 +133,7 @@ public class Main {
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
                     break;
 
-                case 6:
+                case 6: 
                     UI.clearScreen();
                     MenuManagement.displayMenu();
                     UI.waitForUserInput("Press enter to go back to main panel", sc);
@@ -161,10 +161,10 @@ public class Main {
             UI.clearScreen();
             String[] adminMenuOptions = {"View and Process Recharge Requests", "Show Menu Options", "Logout"};
             UI.printBoxedMenu(adminMenuOptions, "Admin Dashboard");
-
+    
             int choice = sc.nextInt();
             sc.nextLine();
-
+    
             switch (choice) {
                 case 1:
                     UI.clearScreen();
@@ -173,7 +173,7 @@ public class Main {
                     break;
                 case 2:
                     UI.clearScreen();
-                    MenuManagement.showMenuOptions(sc);
+                    MenuManagement.showMenuOptions(sc); 
                     break;
                 case 3:
                     UI.printMessage("Logging out...", "info");
@@ -184,5 +184,6 @@ public class Main {
             }
         }
     }
-
+    
 }
+
