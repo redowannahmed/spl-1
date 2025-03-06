@@ -16,31 +16,42 @@ public class AuthenticationHelper {
     public User loginHelper(Scanner sc) {
         String username;
         String password;
-        
-        do {
-            System.out.println(UI.MINT_GREEN + "Enter username:" + UI.RESET);
-            username = sc.nextLine().trim();
-            if (username.isEmpty()) {
-                UI.printMessage("username cannot be empty", "error");
-            }
-        } while (username.isEmpty());
-        
-        do {
-            System.out.println(UI.MINT_GREEN + "Enter password:" + UI.RESET);
-            password = sc.nextLine().trim();
-            if (password.isEmpty()) {
-                UI.printMessage("Password cannot be blank. Please enter a valid password.", "error");
-            }
-        } while (password.isEmpty());
+        User user = null;
+        boolean tryAgain = true;
     
-        User user = auth.login(username, password);
-        if (user != null) {
-            return user;
-        } else {
-            UI.printMessage("Login failed. Invalid username or password.", "error");
+        while (tryAgain) {
             UI.clearScreen();
+            UI.printMessage("Login", "header");
+    
+            do {
+                System.out.println(UI.MINT_GREEN + "Enter username:" + UI.RESET);
+                username = sc.nextLine().trim();
+                if (username.isEmpty()) {
+                    UI.printMessage("Username cannot be empty", "error");
+                }
+            } while (username.isEmpty());
+    
+            do {
+                System.out.println(UI.MINT_GREEN + "Enter password:" + UI.RESET);
+                password = sc.nextLine().trim();
+                if (password.isEmpty()) {
+                    UI.printMessage("Password cannot be blank. Please enter a valid password.", "error");
+                }
+            } while (password.isEmpty());
+    
+            user = auth.login(username, password);
+            if (user != null) {
+                return user;
+            } else {
+                UI.printMessage("Login failed. Invalid username or password.", "error");
+                System.out.println(UI.MINT_GREEN + "Would you like to try again? (yes/no)" + UI.RESET);
+                String choice = sc.nextLine().trim().toLowerCase();
+                if (!choice.equals("yes")) {
+                    tryAgain = false;
+                }
+            }
         }
-        return null; 
+        return null;
     }
     
     public void registerHelper(Scanner sc) {
