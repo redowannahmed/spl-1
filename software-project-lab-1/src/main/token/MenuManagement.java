@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class MenuManagement
 {
-    private static final String MENU_FILE = "D:\\Practice Code\\spl_new\\token-table\\spl-1\\menu.txt";
+    private static final String MENU_FILE = "menu.txt";
     private static final String[] HEADERS = {"Day", "Breakfast", "Lunch", "Dinner"};
     private static String[][] menuData = new String[7][4];
 
