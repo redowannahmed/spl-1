@@ -32,12 +32,17 @@ public class WalletManager {
 
     public boolean requestRecharge(String username, int amount, String slipId) {
         if (amount < 0) {
-            UI.printMessage("recharge amount cannot be negative", "error");
+            UI.printMessage("Recharge amount cannot be negative", "error");
+            return false;
+        }
+    
+        if (slipId == null || slipId.trim().isEmpty()) {
+            UI.printMessage("Slip ID cannot be blank or null", "error");
             return false;
         }
     
         if (isDuplicateSlipId(slipId)) {
-            UI.printMessage("slip ID cannot be duplicate", "error");
+            UI.printMessage("Slip ID cannot be duplicate", "error");
             return false;
         }
     
@@ -50,9 +55,10 @@ public class WalletManager {
             UI.printMessage("Error writing to recharge requests file: " + e.getMessage(), "error");
             return false;
         }
-
+    
         return true;
     }
+    
     
 
     private List<RechargeRequest> loadRequests() {
