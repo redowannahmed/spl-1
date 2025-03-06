@@ -1,5 +1,5 @@
-Saturday;mutton, chips, juice;chicken curry, rice, salad;grilled fish, potatoes, watermelon
-Sunday;pancakes, honey, orange juice;grilled chicken, fries, coleslaw;kichuna, kichuna, kichuna
+Saturday;muri, muri, muri;chicken curry, rice, salad;grilled fish, potatoes, watermelon
+Sunday;pancakes, honey, orange juice;Beef, Rice, Drinks;kichuna, kichuna, kichuna
 Monday;omelette, toast, coffee;vegetable stir-fry, fried rice, soup;steak, mashed potatoes, green beans
 Tuesday;cornflakes, milk, banana;tuna sandwich, chips, apple;pasta, vegetable sauce, breadsticks
 Wednesday;bagels, cream cheese, coffee;chicken salad, pita bread, orange;beef stew, bread, carrots

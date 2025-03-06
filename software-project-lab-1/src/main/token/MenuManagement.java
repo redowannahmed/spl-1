@@ -9,14 +9,14 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class MenuManagement
-{   
-    private static final String MENU_FILE = "menu.txt";
+{
+    private static final String MENU_FILE = "D:\\Practice Code\\spl_new\\token-table\\spl-1\\menu.txt";
     private static final String[] HEADERS = {"Day", "Breakfast", "Lunch", "Dinner"};
     private static String[][] menuData = new String[7][4];
 
     public static void loadMenus(String filename)
     {
-        try 
+        try
         {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
@@ -46,18 +46,18 @@ public class MenuManagement
         UI.printTable(HEADERS, menuData);
     }
 
-    
+
     public static void showMenuOptions(Scanner sc) {
-        while (true) { 
+        while (true) {
             loadMenus(MENU_FILE);
-            
+
             String[] mainMenuOptions = {"View Menu", "Edit menu", "Exit"};
             UI.printBoxedMenu(mainMenuOptions, "Menu Options");
             System.out.println();
-    
+
             int choice = sc.nextInt();
             sc.nextLine();
-    
+
             switch (choice) {
                 case 1:
                     UI.clearScreen();
@@ -65,11 +65,11 @@ public class MenuManagement
                     UI.waitForUserInput("Press enter to return to Menu Options", sc);
                     UI.clearScreen();
                     break;
-    
+
                 case 2:
                     editMenu(sc);
                     break;
-    
+
                 case 3:
                     return;
                 default:
@@ -77,34 +77,32 @@ public class MenuManagement
             }
         }
     }
-    
-    public static void editMenu(Scanner scanner) {
-        System.out.println("Enter the day you want to edit (e.g., Saturday, Sunday): ");
-        String day = scanner.nextLine().trim();
 
-        int dayIndex = findDayIndex(day);
-        if (dayIndex == -1)
+    public static void editMenu(Scanner scanner) {
+        String[] days = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+        UI.printBoxedMenu(days, "Enter the day you want to edit");
+        int day = scanner.nextInt();
+
+        int dayIndex = day - 1;
+        if (dayIndex < 0 || dayIndex >= days.length)
         {
             System.out.println("Invalid day entered. Please try again.");
             return;
         }
 
-        System.out.println("Editing menu for: " + menuData[dayIndex][0]);
-        System.out.println("1. Breakfast");
-        System.out.println("2. Lunch");
-        System.out.println("3. Dinner");
+        String[] tokenList = {"Breakfast", "Lunch", "Dinner"};
+        UI.printBoxedMenu(tokenList, "Enter the meal you want to edit");
 
-        System.out.print("Enter the meal you want to edit: ");
         int mealChoice = scanner.nextInt();
-        scanner.nextLine(); 
+        scanner.nextLine();
 
         if (mealChoice < 1 || mealChoice > 3) {
             System.out.println("Invalid meal choice. Please try again.");
             return;
         }
 
-        System.out.println("Current menu for " + HEADERS[mealChoice] + ": " + menuData[dayIndex][mealChoice]);
-        System.out.print("Enter the new menu for " + HEADERS[mealChoice] + ": ");
+        System.out.println(UI.MINT_GREEN + "Current menu for " + HEADERS[mealChoice] + ": " + UI.RESET + menuData[dayIndex][mealChoice]);
+        System.out.print(UI.MINT_GREEN + "Enter the new menu for " + HEADERS[mealChoice] + ": " + UI.RESET);
         String newMenu = scanner.nextLine();
 
         menuData[dayIndex][mealChoice] = newMenu;
