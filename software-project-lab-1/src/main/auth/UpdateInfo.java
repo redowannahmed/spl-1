@@ -1,19 +1,13 @@
 package auth;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
-
 import UI.UI;
 import user.Student;
 
-public class UpdateInfo
-{
+public class UpdateInfo {
     Scanner sc = new Scanner(System.in);
 
-        public static void updateInfo(Student student, Authentication auth, Scanner sc) {
+    public static void updateInfo(Student student, Authentication auth, Scanner sc) {
         while (true) {
             UI.clearScreen();
             UI.printBoxedMenu(new String[]{
@@ -24,32 +18,39 @@ public class UpdateInfo
 
             System.out.print(UI.colorText("Enter your choice: ", UI.EMERALD_GREEN));
             int choice = sc.nextInt();
-            sc.nextLine(); 
+            sc.nextLine();
 
             switch (choice) {
                 case 1:
                     UI.clearScreen();
-                    System.out.print(UI.colorText("Enter new username: ", UI.EMERALD_GREEN));
+                    System.out.print("Enter old username: ");
+                    String oldUsername = sc.nextLine();
+                    System.out.print("Enter password: ");
+                    String password = sc.nextLine();
+                    System.out.print("Enter new username: ");
                     String newUsername = sc.nextLine();
-
-                    if (updateUsername(student, auth, newUsername)) {
+                    
+                    if (updateUsername(student, auth, oldUsername, password, newUsername)) {
                         UI.printMessage("Username updated successfully.", "success");
                     } else {
-                        UI.printMessage("Error: Username already exists or update failed.", "error");
+                        UI.printMessage("Error: Invalid credentials or username already exists.", "error");
                     }
                     UI.waitForUserInput("Press Enter to continue...", sc);
                     break;
-
+                
                 case 2:
                     UI.clearScreen();
-                    System.out.print(UI.colorText("Enter new password: ", UI.EMERALD_GREEN));
+                    System.out.print("Enter old password: ");
+                    String oldPassword = sc.nextLine();
+                    System.out.print("Enter new password: ");
                     String newPassword = sc.nextLine();
-
-                    if (newPassword.trim().isEmpty()) {
-                        UI.printMessage("Password cannot be empty.", "error");
-                    } else {
-                        updatePassword(student, auth, newPassword);
+                    System.out.print("Confirm new password: ");
+                    String confirmPassword = sc.nextLine();
+                    
+                    if (updatePassword(student, auth, oldPassword, newPassword, confirmPassword)) {
                         UI.printMessage("Password updated successfully.", "success");
+                    } else {
+                        UI.printMessage("Error: Invalid credentials or password format incorrect.", "error");
                     }
                     UI.waitForUserInput("Press Enter to continue...", sc);
                     break;
@@ -63,104 +64,59 @@ public class UpdateInfo
                     UI.waitForUserInput("Press Enter to continue...", sc);
             }
         }
-    }    
+    }
 
-    public static boolean updateUsername(Student student, Authentication auth, String newUsername) {
+    public static boolean updateUsername(Student student, Authentication auth, String oldUsername, String password, String newUsername) {
+        if (!student.getUsername().equals(oldUsername) || !student.getPassword().equals(auth.customHash(password))) {
+            return false;
+        }
+
+        if (!auth.isStudentUsernameUnique(newUsername)) {
+            return false;
+        }
+        
+        student.setUsername(newUsername);
+        return saveStudentChanges(student);
+    }
+
+    public static boolean updatePassword(Student student, Authentication auth, String oldPassword, String newPassword, String confirmPassword) {
+        if (!student.getPassword().equals(auth.customHash(oldPassword))) {
+            return false;
+        }
+
+        if (!newPassword.equals(confirmPassword) || !auth.isValidPassword(newPassword)) {
+            return false;
+        }
+        
+        student.setPassword(auth.customHash(newPassword));
+        return saveStudentChanges(student);
+    }
+
+    private static boolean saveStudentChanges(Student student) {
         List<Student> students = new ArrayList<>();
-    
+
         try (BufferedReader reader = new BufferedReader(new FileReader("students.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                Student stdnt = new Student(data[0], data[1], Integer.parseInt(data[2]), data[3]);
-                students.add(stdnt);
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading student data from file: " + e.getMessage());
-            return false;
-        }
-    
-        // Check if the new username already exists
-        for (Student st : students) {
-            if (st.getUsername().equals(newUsername)) {
-                System.out.println("Error: Username already taken. Please choose a different username.");
-                return false;
-            }
-        }
-    
-        // Update the student's username if it's unique
-        for (Student st : students) {
-            if (st.getUsername().equals(student.getUsername())) {
-                if (newUsername != null) {
-                    st.setUsername(newUsername);
-                    break;
+                Student std = Student.fromString(line);
+                if (std.getId() == student.getId()) {
+                    students.add(student);
+                } else {
+                    students.add(std);
                 }
             }
+        } catch (IOException e) {
+            return false;
         }
-    
-        // Write updated data back to the file
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("students.txt"))) {
             for (Student st : students) {
                 writer.write(st.toString());
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.out.println("Error writing updated student data to file: " + e.getMessage());
             return false;
         }
-    
-        // Update the current student's username in memory
-        student.setUsername(newUsername);
         return true;
-    }
-    
-
-    public static void updatePassword(Student student, Authentication auth, String newPassword)
-    {
-        {
-            List<Student> students = new ArrayList<>();
-
-            try (BufferedReader reader = new BufferedReader(new FileReader("students.txt"))) {
-                String line;
-                while ((line = reader.readLine()) != null)
-                {
-                    String[] data = line.split(",");
-                    Student stdnt = new Student(data[0], data[1], Integer.parseInt(data[2]), data[3]);
-
-                    students.add(stdnt);
-                }
-            }
-
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            for (Student st: students)
-            {
-                if (st.getUsername().equals(student.getUsername()))
-                {
-                    if (newPassword !=null)
-                    {
-                        st.setPassword(newPassword);
-                        break;
-                    }
-                }
-            }
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("students.txt")))
-            {
-                for (Student st: students)
-                {
-                    writer.write(st.toString());
-                    writer.newLine();
-                }
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-
-            student.setPassword(newPassword);
-        }
     }
 }
