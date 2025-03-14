@@ -23,34 +23,34 @@ public class UpdateInfo {
             switch (choice) {
                 case 1:
                     UI.clearScreen();
-                    System.out.print("Enter old username: ");
+                    System.out.print(UI.MINT_GREEN + "Enter old username: " + UI.RESET);
                     String oldUsername = sc.nextLine();
-                    System.out.print("Enter password: ");
+                    System.out.print(UI.MINT_GREEN + "Enter password: " + UI.RESET);
                     String password = sc.nextLine();
-                    System.out.print("Enter new username: ");
+                    System.out.print(UI.MINT_GREEN + "Enter new username: " + UI.RESET);
                     String newUsername = sc.nextLine();
                     
                     if (updateUsername(student, auth, oldUsername, password, newUsername)) {
-                        UI.printMessage("Username updated successfully.", "success");
+                        UI.printMessage(UI.EMERALD_GREEN + "Username updated successfully." + UI.RESET, "success");
                     } else {
-                        UI.printMessage("Error: Invalid credentials or username already exists.", "error");
+                        UI.printMessage(UI.CORAL_RED + "Error: Invalid credentials or username already exists." + UI.RESET, "error");
                     }
                     UI.waitForUserInput("Press Enter to continue...", sc);
                     break;
                 
                 case 2:
                     UI.clearScreen();
-                    System.out.print("Enter old password: ");
+                    System.out.print(UI.MINT_GREEN + "Enter old password: " + UI.RESET);
                     String oldPassword = sc.nextLine();
-                    System.out.print("Enter new password: ");
+                    System.out.print(UI.MINT_GREEN + "Enter new password: " +UI.RESET);
                     String newPassword = sc.nextLine();
-                    System.out.print("Confirm new password: ");
+                    System.out.print(UI.MINT_GREEN + "Confirm new password: " + UI.RESET);
                     String confirmPassword = sc.nextLine();
                     
                     if (updatePassword(student, auth, oldPassword, newPassword, confirmPassword)) {
-                        UI.printMessage("Password updated successfully.", "success");
+                        UI.printMessage(UI.EMERALD_GREEN + "Password updated successfully." + UI.RESET, "success");
                     } else {
-                        UI.printMessage("Error: Invalid credentials or password format incorrect.", "error");
+                        UI.printMessage(UI.CORAL_RED + "Error: Invalid credentials or password format incorrect." + UI.RESET, "error");
                     }
                     UI.waitForUserInput("Press Enter to continue...", sc);
                     break;
@@ -60,7 +60,7 @@ public class UpdateInfo {
                     return;
 
                 default:
-                    UI.printMessage("Invalid option. Please try again.", "error");
+                    UI.printMessage(UI.CORAL_RED + "Invalid option. Please try again." + UI.RESET, "error");
                     UI.waitForUserInput("Press Enter to continue...", sc);
             }
         }
