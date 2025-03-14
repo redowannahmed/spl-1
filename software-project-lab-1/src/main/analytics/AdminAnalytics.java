@@ -11,12 +11,18 @@ public class AdminAnalytics {
     public static void showAnalyticsMenu(Scanner scanner) {
         while (true) {
             UI.clearScreen();
+
+            String[] bannerForMealSalesAnalytics = {"View last 4 weeks analytics", "View monthly analytics (total + meal-wise breakdown)", "Back"};
+
+            UI.printBoxedMenu(bannerForMealSalesAnalytics,"Meal Sales Analytics");
+            /* 
             System.out.println("\n=== Meal Sales Analytics ===");
             System.out.println("1. View last 5 weeks analytics");
             System.out.println("2. View monthly analytics (total + meal-wise breakdown)");
             System.out.println("3. Back");
+             */
 
-            System.out.print("Select an option: ");
+            //System.out.print("Select an option: ");
             int choice;
             try {
                 choice = Integer.parseInt(scanner.nextLine().trim());
@@ -44,13 +50,17 @@ public class AdminAnalytics {
     public static void showWeeklyAnalytics(Scanner scanner) {
         while (true) {
             UI.clearScreen();
-            System.out.println("\n=== Weekly Meal Sales Analytics ===");
-            System.out.println("1. Breakfast");
-            System.out.println("2. Lunch");
-            System.out.println("3. Dinner");
-            System.out.println("4. Back");
 
-            System.out.print("Select a meal type: ");
+            String[] salesAnalyticsByMeal = {"Breakfast", "Lunch", "Dinner", "Back"};
+
+            UI.printBoxedMenu(salesAnalyticsByMeal, "Weekly Meal Sales Analytics");
+            //System.out.println("\n=== Weekly Meal Sales Analytics ===");
+            //System.out.println("1. Breakfast");
+            //System.out.println("2. Lunch");
+            //System.out.println("3. Dinner");
+            //System.out.println("4. Back");
+
+            //System.out.print("Select a meal type: ");
             int choice;
             try {
                 choice = Integer.parseInt(scanner.nextLine().trim());

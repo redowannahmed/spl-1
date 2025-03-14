@@ -16,7 +16,7 @@ public class UpdateInfo {
                     "Return to Main Menu"
             }, "Update Info Panel");
 
-            System.out.print(UI.colorText("Enter your choice: ", UI.EMERALD_GREEN));
+            System.out.print(UI.colorText("", UI.EMERALD_GREEN));
             int choice = sc.nextInt();
             sc.nextLine();
 

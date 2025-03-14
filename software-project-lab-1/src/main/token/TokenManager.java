@@ -100,7 +100,6 @@ public class TokenManager {
             };
             UI.printBoxedMenu(tokenOptions, "Select a Token to Buy");
     
-            System.out.print("Enter your choice: ");
             int choice = sc.nextInt();
             sc.nextLine(); 
     
