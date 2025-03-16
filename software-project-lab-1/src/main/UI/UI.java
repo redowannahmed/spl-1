@@ -58,7 +58,7 @@ public class UI {
 
     public static void showLoading(String message) {
         System.out.print(colorText(message, INFO_COLOR));
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             try {
                 Thread.sleep(300);
                 System.out.print(colorText(".", INFO_COLOR));
@@ -111,7 +111,8 @@ public class UI {
         System.out.println(BOX_COLOR + "║" + " ".repeat(boxWidth) + "║" + RESET);
     
         System.out.println(BOX_COLOR + "╚" + horizontalBorder + "╝" + RESET);
-    
+        System.out.println();
+        
         System.out.print(colorText("Select an option: ", PROMPT_COLOR));
     }
     

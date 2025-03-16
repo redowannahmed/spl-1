@@ -37,6 +37,7 @@ public class Main {
                     User loggedInUser = authHelper.loginHelper(sc);
     
                     if (loggedInUser != null) {
+                        System.out.println();
                         UI.showLoading("Redirecting to your dashboard");
                         UI.clearScreen();
     
@@ -47,7 +48,6 @@ public class Main {
                         }
     
                     } else {
-                        // No need to display "User couldn't be found" here
                         UI.waitForUserInput("Press enter to go back to main panel", sc);
                     }
                     break;
@@ -72,40 +72,41 @@ public class Main {
     private static void showStudentMenu(Scanner sc, Student student, Authentication auth, WalletManager walletManager, TokenManager tokenManager) {
         while (true) {
             UI.clearScreen();
+
+            System.out.println(UI.SLATE_BLUE + UI.BOLD + "WELCOME, " + student.getName().toUpperCase() + "!" + UI.RESET);
+
+            System.out.println();
+
             String[] studentMenuOptions = {
                 "Recharge Wallet", "View Balance", "Buy Token",
                 "View Pending Recharge Requests", "View Purchase History",
                 "View Menu", "Update Info", "Logout"
             };
-            UI.printBoxedMenu(studentMenuOptions, "Student Dashboard");
+            UI.printBoxedMenu(studentMenuOptions, "Dashboard");
 
+        
             int choice = sc.nextInt();
             sc.nextLine();
 
             switch (choice) {
-                case 1: 
+                case 1:
                     UI.clearScreen();
                     UI.printMessage("Enter recharge amount:", "info");
                     int amount = sc.nextInt();
                     sc.nextLine();
 
-                    String slipId;
-
-                    while (true) {
-                        UI.printMessage("Enter slip ID:", "info");
-                        slipId = sc.nextLine();
-                        if (!walletManager.isDuplicateSlipId(slipId)) {
-                            break;
-                        }
-                        UI.printMessage("Error: Slip ID already exists. Try again.", "error");
-                    }
-
+                    String slipId = WalletManager.generateUniqueSlipID();
+                    UI.printMessage("Your unique transaction ID: " + UI.CORAL_RED+ slipId + UI.RESET, "info");
+                    System.out.println();
+                    UI.printMessage("Use this transaction ID as the payment reference in bKash/Nagad/Bank transfer.", "info");
+                    System.out.println();
+                    
                     if (walletManager.requestRecharge(student.getUsername(), amount, slipId)) {
-                        UI.printMessage("Recharge request submitted", "success");
-                        UI.waitForUserInput("Press enter to go back to main panel", sc);
+                        UI.printMessage("Recharge request submitted successfully.", "success");
+                        UI.waitForUserInput("Press enter to go back to the main panel", sc);
                     } else {
                         UI.printMessage("Error requesting recharge", "error");
-                        UI.waitForUserInput("Press enter to go back to main panel", sc);
+                        UI.waitForUserInput("Press enter to go back to the main panel", sc);
                     }
                     break;
 
