@@ -30,7 +30,7 @@ public class Authentication {
             while ((line = reader.readLine()) != null) {
                 Student student = Student.fromString(line);
                 if (student.getUsername().equals(username) && student.getPassword().equals(pass)) {
-                    UI.printMessage("Logged in as: " + student.getName(), "success");
+                    System.out.println();
                     return student;
                 }
             }
