@@ -21,19 +21,27 @@ public class AuthenticationHelper {
     
         while (tryAgain) {
             UI.clearScreen();
-            UI.printMessage("Login", "header");
+    
+            System.out.println(UI.SLATE_BLUE + UI.BOLD + "======================================" + UI.RESET);
+            System.out.println(UI.SLATE_BLUE + UI.BOLD + "   ENTER YOUR CREDENTIALS TO LOG IN   " + UI.RESET);
+            System.out.println(UI.SLATE_BLUE + UI.BOLD + "======================================" + UI.RESET);
+            System.out.println();
     
             do {
-                System.out.println(UI.MINT_GREEN + "Enter username:" + UI.RESET);
+                UI.printMessage("Enter username:", "info");
+                System.out.print(UI.MINT_GREEN);
                 username = sc.nextLine().trim();
+                System.out.print(UI.RESET);
                 if (username.isEmpty()) {
                     UI.printMessage("Username cannot be empty", "error");
                 }
             } while (username.isEmpty());
     
             do {
-                System.out.println(UI.MINT_GREEN + "Enter password:" + UI.RESET);
+                UI.printMessage("Enter password:", "info");
+                System.out.print(UI.MINT_GREEN);
                 password = sc.nextLine().trim();
+                System.out.print(UI.RESET);
                 if (password.isEmpty()) {
                     UI.printMessage("Password cannot be blank. Please enter a valid password.", "error");
                 }
@@ -41,11 +49,19 @@ public class AuthenticationHelper {
     
             user = auth.login(username, password);
             if (user != null) {
+                UI.printMessage("LOGIN SUCCESSFUL! WELCOME BACK.", "success");
+                System.out.println();
                 return user;
             } else {
-                UI.printMessage("Login failed. Invalid username or password.", "error");
-                System.out.println(UI.MINT_GREEN + "Would you like to try again? (yes/no)" + UI.RESET);
+                System.out.println();
+                UI.printMessage("LOGIN FAILED. INVALID USERNAME OR PASSWORD.", "error");
+    
+                System.out.println();
+                UI.printMessage("Would you like to try again? (yes/no)", "info");
+                System.out.print(UI.MINT_GREEN);
                 String choice = sc.nextLine().trim().toLowerCase();
+                System.out.print(UI.RESET);
+    
                 if (!choice.equals("yes")) {
                     tryAgain = false;
                 }
@@ -54,13 +70,18 @@ public class AuthenticationHelper {
         return null;
     }
     
+    
     public void registerHelper(Scanner sc) {
         String name;
         String username;
         int id;
         String password;
-        
+
         while (true) {
+            System.out.println(UI.SLATE_BLUE + UI.BOLD + "======================================" + UI.RESET);
+            System.out.println(UI.SLATE_BLUE + UI.BOLD + "   ENTER YOUR CREDENTIALS TO REGISTER   " + UI.RESET);
+            System.out.println(UI.SLATE_BLUE + UI.BOLD + "======================================" + UI.RESET);
+            System.out.println();
             do {
                 UI.printMessage("Enter name:", "info");
                 name = sc.nextLine().trim();
@@ -105,7 +126,8 @@ public class AuthenticationHelper {
     
             try {
                 auth.registerStudent(name, username, id, password);
-                UI.printMessage("student has been registered successfully", "success");
+                UI.printMessage("registration successful", "success");
+                System.out.println();
                 break; 
             } catch (DuplicateUsernameException | DuplicateIDException e) {
                 UI.printMessage("Registration failed: " + e.getMessage(), "error");

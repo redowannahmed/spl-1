@@ -1,6 +1,7 @@
 package wallet;
 import java.io.*;
 import java.util.*;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import auth.Authentication;
@@ -30,6 +31,11 @@ public class WalletManager {
         return false;
     }
 
+    public static String generateUniqueSlipID() {
+        int random = new Random().nextInt(9000) + 1000; 
+        return "req-" + random;
+    }
+    
     public boolean requestRecharge(String username, int amount, String slipId) {
         if (amount < 0) {
             UI.printMessage("Recharge amount cannot be negative", "error");
@@ -53,6 +59,14 @@ public class WalletManager {
             writer.newLine();
         } catch (IOException e) {
             UI.printMessage("Error writing to recharge requests file: " + e.getMessage(), "error");
+            return false;
+        }
+    
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("paymentLog.txt", true))) {
+            writer.write(request.toString());
+            writer.newLine();
+        } catch (IOException e) {
+            UI.printMessage("Error writing to payment log file: " + e.getMessage(), "error");
             return false;
         }
     
@@ -109,55 +123,100 @@ public class WalletManager {
     }
     
     public void processRechargeRequests(Scanner sc) {
-        List<RechargeRequest> requests = loadRequests();
+        while (true) { // Keep looping until the admin chooses to go back
+            List<RechargeRequest> requests = loadRequests();
     
-        if (requests.isEmpty()) {
-            System.out.println("No recharge requests available.");
-            return;
-        }
-    
-        String[] headers = {"No.", "Username", "Amount", "Slip ID", "Date"};
-    
-        String[][] data = new String[requests.size()][headers.length];
-        int cnt = 0;
-        for (RechargeRequest request : requests) {
-            data[cnt][0] = String.valueOf(cnt + 1);
-            data[cnt][1] = request.getUsername();
-            data[cnt][2] = String.valueOf(request.getAmount());
-            data[cnt][3] = request.getSlipId();
-            data[cnt][4] = request.getDate().toString(); 
-            cnt++;
-        }
-    
-        UI.clearScreen();
-        UI.printTable(headers, data);
-    
-        System.out.println("Enter the slip ID of the request you want to process:");
-        String slipId = sc.nextLine();
-    
-        RechargeRequest matchedRequest = null;
-        for (RechargeRequest r : requests) {
-            if (r.getSlipId().equals(slipId)) {
-                matchedRequest = r;
-                break;
+            if (requests.isEmpty()) {
+                System.out.println("No recharge requests available.");
+                return;
             }
-        }
     
-        if (matchedRequest != null) {
-            System.out.println("1. Approve  2. Decline");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            String[] headers = {"No.", "Username", "Amount", "Slip ID", "Date"};
+            String[][] data = new String[requests.size()][headers.length];
     
-            if (choice == 1) {
-                approveRequest(matchedRequest);
-                System.out.println("Request approved and balance updated.");
+            // Populate the table
+            for (int i = 0; i < requests.size(); i++) {
+                RechargeRequest request = requests.get(i);
+                data[i][0] = String.valueOf(i + 1);
+                data[i][1] = request.getUsername();
+                data[i][2] = String.valueOf(request.getAmount());
+                data[i][3] = request.getSlipId();
+                data[i][4] = request.getDate().toString();
+            }
+    
+            UI.clearScreen();
+            UI.printTable(headers, data);
+    
+            // Display "Back" option separately
+            System.out.println("\nPress 0 to go back.");
+    
+            System.out.println("Enter the No. of the request you want to process:");
+            int requestNo;
+            
+            try {
+                requestNo = sc.nextInt();
+                sc.nextLine(); // Consume newline
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a number.");
+                sc.nextLine(); // Clear the invalid input
+                continue;
+            }
+    
+            if (requestNo == 0) {
+                return; // Exit the loop and go back
+            }
+    
+            if (requestNo < 1 || requestNo > requests.size()) {
+                System.out.println("Invalid request number. Please try again.");
+                continue;
+            }
+    
+            RechargeRequest matchedRequest = requests.get(requestNo - 1);
+    
+            if (isSlipIdInPaymentLog(matchedRequest.getSlipId())) {
+                System.out.println();
+                UI.printMessage("This slip ID is valid. It exists in the payment log.", "success");
+                System.out.println("1. Approve");
+                int choice = sc.nextInt();
+                sc.nextLine();
+    
+                if (choice == 1) {
+                    approveRequest(matchedRequest);
+                    UI.printMessage("Request approved and balance updated.", "success");
+                }
             } else {
-                System.out.println("Request declined.");
-                removeRequest(matchedRequest);
+                System.out.println();
+                UI.printMessage("This slip ID does not exist in the payment log yet.", "info");
+                System.out.println("1. Decline");
+                System.out.println("2. Ignore");
+                int choice = sc.nextInt();
+                sc.nextLine();
+    
+                if (choice == 1) {
+                    removeRequest(matchedRequest);
+                    System.out.println("Request declined.");
+                } else {
+                    System.out.println("Request ignored.");
+                }
             }
-        } else {
-            System.out.println("Invalid slip ID. Please try again.");
         }
+    }
+    
+    
+    
+    
+    private boolean isSlipIdInPaymentLog(String slipId) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("paymentLog.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(slipId)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading payment log: " + e.getMessage());
+        }
+        return false;
     }
     
 

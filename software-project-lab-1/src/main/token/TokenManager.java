@@ -51,7 +51,7 @@ public class TokenManager {
         LocalDateTime purchaseTime = LocalDateTime.now();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseHistory.txt", true)))
         {
-            writer.write(student.getUsername() + "," + tokenType + "," + purchaseTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
+            writer.write(student.getUsername() + "," + tokenType + "," + purchaseTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "\n");
         } 
         catch (IOException e)
         {
