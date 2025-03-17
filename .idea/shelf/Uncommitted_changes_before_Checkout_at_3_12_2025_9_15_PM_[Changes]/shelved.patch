@@ -1,0 +1,37 @@
+Index: students.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>wahid,wahid,116,22746988\r\nriyad hosen,riyad,117,ff3d1f29\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/students.txt b/students.txt
+--- a/students.txt	(revision e282359ab118eaeefbae167c64d54978a5acc659)
++++ b/students.txt	(date 1741792024908)
+@@ -1,2 +1,3 @@
+ wahid,wahid,116,22746988
+ riyad hosen,riyad,117,ff3d1f29
++Auntor,Auntor141,141,ba257cf2
+Index: studentWallet.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>riyad,1900\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/studentWallet.txt b/studentWallet.txt
+--- a/studentWallet.txt	(revision e282359ab118eaeefbae167c64d54978a5acc659)
++++ b/studentWallet.txt	(date 1741792232433)
+@@ -1,1 +1,2 @@
+ riyad,1900
++Auntor141,950
+Index: purchaseHistory.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/purchaseHistory.txt b/purchaseHistory.txt
+--- a/purchaseHistory.txt	(revision e282359ab118eaeefbae167c64d54978a5acc659)
++++ b/purchaseHistory.txt	(date 1741792232439)
+@@ -1,0 +1,1 @@
++Auntor141,BREAKFAST,2025-03-12 21:10:32
