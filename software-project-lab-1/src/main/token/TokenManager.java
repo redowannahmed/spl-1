@@ -157,6 +157,7 @@ public class TokenManager {
 
     public void displayTokenPurchaseReceipt(Student student, String tokenType) {
         String studentName = student.getUsername();
+        int studentId=student.getId();
         LocalDateTime purchaseDate = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = purchaseDate.format(formatter);
@@ -170,6 +171,7 @@ public class TokenManager {
         // Table data
         String[][] data = {
             {"Student Name", studentName},
+            {"Student Id", String.valueOf(studentId)},
             {"Purchase Date", formattedDate},
             {"Token Type", tokenType},
             {"Current Balance", currentBalance}
