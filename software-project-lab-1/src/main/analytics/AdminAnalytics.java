@@ -14,7 +14,7 @@ public class AdminAnalytics {
         while (true) {
             UI.clearScreen();
             String[] analyticsOptions = {
-                "View last 4 weeks' analytics", "View monthly analytics (total + meal-wise breakdown)",
+                "View last 4 week's analytics", "View monthly analytics (total + meal-wise breakdown)",
                 "Back"};
 
             UI.printBoxedMenu(analyticsOptions, "View Analytics");
