@@ -27,8 +27,7 @@ public class StudentTest {
         assertNotEquals("ronaldo2001", student.getPassword(), "Password should not match");
     }
     @Test
-    void testGetName() {
-        
-        assertEquals("Messi", student.getName());
-    }
-}
+    void testGetId() {
+       
+        assertEquals(1001, student.getId());
+    }}
