@@ -2658,3 +2658,13 @@ redowan,DINNER,2025-03-16
 redowan,DINNER,2025-03-16
 redowan,DINNER,2025-03-16
 redowan,DINNER,2025-03-16
+student1,BREAKFAST,2025-03-19
+student1,LUNCH,2025-03-19
+student1,DINNER,2025-03-19
+student1,BREAKFAST,2025-03-19
+siminchowdhuryy,BREAKFAST,2025-03-22
+siminchowdhuryy,LUNCH,2025-03-22
+siminchowdhuryy,DINNER,2025-03-22
+siminchowdhuryy,BREAKFAST,2025-03-22
+siminchowdhuryy,LUNCH,2025-03-22
+siminchowdhuryy,DINNER,2025-03-22

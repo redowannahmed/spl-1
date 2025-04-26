@@ -165,10 +165,8 @@ public class TokenManager {
     
         UI.clearScreen();
     
-        // Table headers
         String[] headers = {"Field", "Details"};
     
-        // Table data
         String[][] data = {
             {"Student Name", studentName},
             {"Student Id", String.valueOf(studentId)},

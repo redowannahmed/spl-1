@@ -127,13 +127,27 @@ public class UI {
         }
         System.out.println(color + BOLD + message + RESET);
     }
-    
+
     public static void printTable(String[] headers, String[][] data) {
         final String RESET_COLOR = "\033[0m";
-        final String TEXT_COLOR = BRIGHT_WHITE;  // Bright white
-        final String BORDER_COLOR = BOX_COLOR; // Cyan for borders
+        final String TEXT_COLOR = BRIGHT_WHITE;
+        final String BORDER_COLOR = BOX_COLOR;
     
-        // Calculate column widths
+        int[] colWidths = calculateColumnWidths(headers, data);
+        String topBorder = generateBorder("┌", "┬", "┐", colWidths, BORDER_COLOR, RESET_COLOR);
+        String middleBorder = generateBorder("├", "┼", "┤", colWidths, BORDER_COLOR, RESET_COLOR);
+        String bottomBorder = generateBorder("└", "┴", "┘", colWidths, BORDER_COLOR, RESET_COLOR);
+        String rowFormat = generateRowFormat(colWidths, TEXT_COLOR, RESET_COLOR);
+    
+        renderTable(headers, data, topBorder, middleBorder, bottomBorder, rowFormat);
+    }
+    
+    // --- Helper Methods (Each Does One Thing) ---
+    
+    /**
+     * Calculates the required width for each column.
+     */
+    private static int[] calculateColumnWidths(String[] headers, String[][] data) {
         int[] colWidths = new int[headers.length];
         for (int i = 0; i < headers.length; i++) {
             colWidths[i] = headers[i].length();
@@ -142,58 +156,124 @@ public class UI {
                     colWidths[i] = Math.max(colWidths[i], row[i].length());
                 }
             }
-            colWidths[i] += 3; 
+            colWidths[i] += 3; // Padding
         }
+        return colWidths;
+    }
     
-        // Create table borders
-        StringBuilder borderBuilder = new StringBuilder();
-        borderBuilder.append(BORDER_COLOR).append("┌");
+    /**
+     * Generates horizontal borders (top, middle, bottom).
+     */
+    private static String generateBorder(
+        String leftCorner, String separator, String rightCorner,
+        int[] colWidths, String borderColor, String resetColor
+    ) {
+        StringBuilder border = new StringBuilder(borderColor).append(leftCorner);
         for (int i = 0; i < colWidths.length; i++) {
-            borderBuilder.append("─".repeat(colWidths[i]));
-            borderBuilder.append(i == colWidths.length - 1 ? "┐" : "┬");
+            border.append("─".repeat(colWidths[i]));
+            border.append(i == colWidths.length - 1 ? rightCorner : separator);
         }
-        String topBorder = borderBuilder.append(RESET_COLOR).toString();
+        return border.append(resetColor).toString();
+    }
     
-        borderBuilder.setLength(0);
-        borderBuilder.append(BORDER_COLOR).append("├");
-        for (int i = 0; i < colWidths.length; i++) {
-            borderBuilder.append("─".repeat(colWidths[i]));
-            borderBuilder.append(i == colWidths.length - 1 ? "┤" : "┼");
-        }
-        String middleBorder = borderBuilder.append(RESET_COLOR).toString();
-    
-        borderBuilder.setLength(0);
-        borderBuilder.append(BORDER_COLOR).append("└");
-        for (int i = 0; i < colWidths.length; i++) {
-            borderBuilder.append("─".repeat(colWidths[i]));
-            borderBuilder.append(i == colWidths.length - 1 ? "┘" : "┴");
-        }
-        String bottomBorder = borderBuilder.append(RESET_COLOR).toString();
-    
-        // Create the row format string
-        StringBuilder formatBuilder = new StringBuilder();
+    /**
+     * Generates the format string for a row.
+     */
+    private static String generateRowFormat(int[] colWidths, String textColor, String resetColor) {
+        StringBuilder format = new StringBuilder();
         for (int width : colWidths) {
-            formatBuilder.append("│ ").append(TEXT_COLOR).append("%-").append(width - 2).append("s ").append(RESET_COLOR);
+            format.append("│ ").append(textColor).append("%-").append(width - 2).append("s ").append(resetColor);
         }
-        formatBuilder.append("│\n");
-        String format = formatBuilder.toString();
+        return format.append("│\n").toString();
+    }
     
-        // Print the table
+    /**
+     * Renders the full table.
+     */
+    private static void renderTable(
+        String[] headers, String[][] data,
+        String topBorder, String middleBorder, String bottomBorder,
+        String rowFormat
+    ) {
         System.out.println(topBorder);
-    
-        // Print headers
-        System.out.printf(format, (Object[]) headers);
+        System.out.printf(rowFormat, (Object[]) headers);
         System.out.println(middleBorder);
     
-        // Print data rows with horizontal separators
         for (int i = 0; i < data.length; i++) {
-            System.out.printf(format, (Object[]) data[i]);
+            System.out.printf(rowFormat, (Object[]) data[i]);
             if (i < data.length - 1) {
                 System.out.println(middleBorder);
             }
         }
         System.out.println(bottomBorder);
     }
+    
+    // public static void printTable(String[] headers, String[][] data) {
+    //     final String RESET_COLOR = "\033[0m";
+    //     final String TEXT_COLOR = BRIGHT_WHITE;  // Bright white
+    //     final String BORDER_COLOR = BOX_COLOR; // Cyan for borders
+    
+    //     // Calculate column widths
+    //     int[] colWidths = new int[headers.length];
+    //     for (int i = 0; i < headers.length; i++) {
+    //         colWidths[i] = headers[i].length();
+    //         for (String[] row : data) {
+    //             if (i < row.length) {
+    //                 colWidths[i] = Math.max(colWidths[i], row[i].length());
+    //             }
+    //         }
+    //         colWidths[i] += 3; 
+    //     }
+    
+    //     // Create table borders
+    //     StringBuilder borderBuilder = new StringBuilder();
+    //     borderBuilder.append(BORDER_COLOR).append("┌");
+    //     for (int i = 0; i < colWidths.length; i++) {
+    //         borderBuilder.append("─".repeat(colWidths[i]));
+    //         borderBuilder.append(i == colWidths.length - 1 ? "┐" : "┬");
+    //     }
+    //     String topBorder = borderBuilder.append(RESET_COLOR).toString();
+    
+    //     borderBuilder.setLength(0);
+    //     borderBuilder.append(BORDER_COLOR).append("├");
+    //     for (int i = 0; i < colWidths.length; i++) {
+    //         borderBuilder.append("─".repeat(colWidths[i]));
+    //         borderBuilder.append(i == colWidths.length - 1 ? "┤" : "┼");
+    //     }
+    //     String middleBorder = borderBuilder.append(RESET_COLOR).toString();
+    
+    //     borderBuilder.setLength(0);
+    //     borderBuilder.append(BORDER_COLOR).append("└");
+    //     for (int i = 0; i < colWidths.length; i++) {
+    //         borderBuilder.append("─".repeat(colWidths[i]));
+    //         borderBuilder.append(i == colWidths.length - 1 ? "┘" : "┴");
+    //     }
+    //     String bottomBorder = borderBuilder.append(RESET_COLOR).toString();
+    
+    //     // Create the row format string
+    //     StringBuilder formatBuilder = new StringBuilder();
+    //     for (int width : colWidths) {
+    //         formatBuilder.append("│ ").append(TEXT_COLOR).append("%-").append(width - 2).append("s ").append(RESET_COLOR);
+    //     }
+    //     formatBuilder.append("│\n");
+    //     String format = formatBuilder.toString();
+    
+    //     // Print the table
+    //     System.out.println(topBorder);
+    
+    //     // Print headers
+    //     System.out.printf(format, (Object[]) headers);
+    //     System.out.println(middleBorder);
+    
+    //     // Print data rows with horizontal separators
+    //     for (int i = 0; i < data.length; i++) {
+    //         System.out.printf(format, (Object[]) data[i]);
+    //         if (i < data.length - 1) {
+    //             System.out.println(middleBorder);
+    //         }
+    //     }
+    //     System.out.println(bottomBorder);
+    // }
     
     
     
@@ -219,5 +299,15 @@ public class UI {
     public static void waitForUserInput(String prompt, Scanner sc) {
         System.out.println(colorText(prompt, PROMPT_COLOR));
         sc.nextLine();
+    }
+
+    public static void main(String[] args) {
+        String[] headers = {"ID", "Name", "dept"};
+        String[][] data = {
+            {"1", "Alice", "CSE"},
+            {"2", "Bob", "EEE"}
+        };
+
+        UI.printTable(headers, data);
     }
 }

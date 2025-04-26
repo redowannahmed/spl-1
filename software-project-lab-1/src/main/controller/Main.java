@@ -51,7 +51,7 @@ public class Main {
                         UI.waitForUserInput("Press enter to go back to main panel", sc);
                     }
                     break;
-    
+
                 case 2: 
                     UI.clearScreen();
                     authHelper.registerHelper(sc);

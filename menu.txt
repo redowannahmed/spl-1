@@ -1,7 +1,7 @@
-Saturday;paratha,dim bhuna,cha;chicken biryani,salad,borhani;grilled rui maach,aloo bharta,dal  
-Sunday;ruti,begun bharta,cha;beef tehari,salad,borhani;khichuri,dim curry,achar  
-Monday;chirer polao,gur,cha;shak bhaji,dal,bhaat;beef curry,alu bharta,dal  
-Tuesday;panta bhaat,shutki bharta,onion;chingri malai curry,polao,salad;chicken curry,naan,chutney  
-Wednesday;luchi,alur dom,cha;dal,aloo bharta,bhaat;beef rezala,paratha,borhani  
-Thursday;naan,cholar dal,gur;grilled ilish,bhaat,begun bharta;chicken roast,polao,firni  
+Saturday;paratha,dim bhuna,cha;tehari,salad,borhani;grilled rui maach,aloo bharta,dal
+Sunday;ruti,begun bharta,cha;item1,item2,item3;khichuri,dim curry,achar
+Monday;chirer polao,gur,cha;biryani,biryani,biryani;beef curry,alu bharta,dal
+Tuesday;panta bhaat,shutki bharta,onion;chingri malai curry,polao,salad;chicken curry,naan,chutney
+Wednesday;luchi,alur dom,cha;dal,aloo bharta,bhaat;beef rezala,paratha,borhani
+Thursday;naan,cholar dal,gur;grilled ilish,bhaat,begun bharta;chicken roast,polao,firni
 Friday;shemai,doi,luchi;kacchi biryani,borhani,salad;dim curry,paratha,misti

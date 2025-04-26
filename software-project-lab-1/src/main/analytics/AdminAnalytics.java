@@ -3,9 +3,11 @@ package analytics;
 import UI.UI;
 import java.io.*;
 import java.nio.file.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class AdminAnalytics {
@@ -14,7 +16,7 @@ public class AdminAnalytics {
         while (true) {
             UI.clearScreen();
             String[] analyticsOptions = {
-                "View last 4 weeks' analytics", "View monthly analytics (total + meal-wise breakdown)",
+                "View mealwise analytics for last 4 weeks", "View monthly analytics (total + meal-wise breakdown)",
                 "Back"};
 
             UI.printBoxedMenu(analyticsOptions, "View Analytics");
@@ -139,103 +141,6 @@ public class AdminAnalytics {
         }
     }
 
-    // public static void displayWeeklyAnalytics(String mealType) {
-    //     Map<String, Integer> weekSales = new LinkedHashMap<>();
-    //     Map<String, String> weekDateRanges = new LinkedHashMap<>();
-    //     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    //     SimpleDateFormat readableDateFormat = new SimpleDateFormat("MMM d, yyyy");
-    
-    //     Calendar cal = Calendar.getInstance();
-    
-    //     try {
-    //         // Today's date
-    //         Date today = new Date();
-    //         cal.setTime(today);
-    
-    //         // Track the last 4 rolling weeks (each week is 7 days before the current date)
-    //         List<String> weeksList = new ArrayList<>();
-    //         for (int i = 0; i < 4; i++) {
-    //             // Calculate the end of the week (today - i * 7 days)
-    //             cal.setTime(today);
-    //             cal.add(Calendar.DATE, -i * 7);
-    //             cal.set(Calendar.HOUR_OF_DAY, 23);
-    //             cal.set(Calendar.MINUTE, 59);
-    //             cal.set(Calendar.SECOND, 59);
-    //             cal.set(Calendar.MILLISECOND, 999);
-    //             Date weekEnd = cal.getTime();
-    
-    //             // Calculate the start of the week (6 days before the end date)
-    //             cal.add(Calendar.DATE, -6);
-    //             cal.set(Calendar.HOUR_OF_DAY, 0);
-    //             cal.set(Calendar.MINUTE, 0);
-    //             cal.set(Calendar.SECOND, 0);
-    //             cal.set(Calendar.MILLISECOND, 0);
-    //             Date weekStart = cal.getTime();
-    
-    //             // Format the week range
-    //             String weekKey = String.format("Week %d", i + 1);
-    //             String dateRange = String.format("(%s - %s)",
-    //                     readableDateFormat.format(weekStart),
-    //                     readableDateFormat.format(weekEnd));
-    
-    //             weeksList.add(weekKey);
-    //             weekSales.put(weekKey, 0);
-    //             weekDateRanges.put(weekKey, dateRange);
-    //         }
-    
-    //         // Read purchase history file
-    //         List<String> lines = Files.readAllLines(Paths.get("purchaseHistory.txt"));
-    
-    //         for (String line : lines) {
-    //             String[] parts = line.split(",");
-    //             if (parts.length < 3) continue;
-    
-    //             String meal = parts[1].trim();
-    //             String dateStr = parts[2].trim();
-    
-    //             if (meal.equalsIgnoreCase(mealType)) {
-    //                 Date date = dateFormat.parse(dateStr);
-    
-    //                 // Check which week the date falls into
-    //                 for (String week : weeksList) {
-    //                     String dateRange = weekDateRanges.get(week);
-    //                     String[] dates = dateRange.substring(1, dateRange.length() - 1).split(" - ");
-    //                     Date start = readableDateFormat.parse(dates[0]);
-    //                     Date end = readableDateFormat.parse(dates[1]);
-    
-    //                     // ✅ Fix: Inclusive date range check (includes both start and end date)
-    //                     if (!date.before(start) && !date.after(end)) {
-    //                         weekSales.put(week, weekSales.get(week) + 1);
-    
-    //                         // Optional Debug: Show which meal maps to which week
-    //                         break;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    
-    //         // Debug printout with exact date ranges
-    //         System.out.println("\nWeekly Sales Data for " + mealType + ":");
-    //         for (String week : weeksList) {
-    //             String dateRange = weekDateRanges.get(week);
-    //             System.out.printf("%s %s -> %d meals%n", week, dateRange, weekSales.get(week));
-    //         }
-    
-    //         if (weekSales.values().stream().allMatch(s -> s == 0)) {
-    //             System.out.println("No sales data available for " + mealType + " in the last 4 weeks.");
-    //             return;
-    //         }
-    
-    //         // Call to your existing graph method (if applicable)
-    //         printGraphWithWeekNumbersOnly(weekSales, weeksList, "Weeks", "Meal Sales (Last 4 Weeks)");
-    
-    //     } catch (IOException e) {
-    //         System.out.println("Error reading purchase history file.");
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         System.out.println("Error parsing dates.");
-    //     }
-    // }
 
     public static void displayWeeklyAnalyticsAlternative(String mealType) {
             Map<String, Integer> weekSales = new LinkedHashMap<>();
